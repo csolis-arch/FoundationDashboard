@@ -18,11 +18,21 @@ function tokens(s) {
   return (s || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
     .filter(t => t && !STOP.has(t));
 }
-function nameOverlap(a, b) {
+// How many of the QUERY's words appear in the candidate name (query coverage).
+// This rewards "Haven for Hope" -> "Haven For Hope Of Bexar County" as a strong
+// match, since extra words in the legal name shouldn't be penalized.
+function coverage(query, name) {
+  const Q = tokens(query), N = new Set(tokens(name));
+  if (!Q.length || !N.size) return 0;
+  let hit = 0; Q.forEach(t => { if (N.has(t)) hit++; });
+  return hit / Q.length;
+}
+// Symmetric similarity, used as a secondary tie-breaker in scoring.
+function jaccard(a, b) {
   const A = new Set(tokens(a)), B = new Set(tokens(b));
   if (!A.size || !B.size) return 0;
   let hit = 0; A.forEach(t => { if (B.has(t)) hit++; });
-  return hit / Math.max(A.size, B.size);
+  return hit / (A.size + B.size - hit);
 }
 
 async function getJSON(url) {
@@ -45,14 +55,16 @@ module.exports = async (req, res) => {
       const orgs = sr.organizations || [];
       if (orgs.length) {
         orgs.forEach(o => {
-          o._ov = nameOverlap(q, o.name);
-          o._score = o._ov * 5 + ((o.city || '').toLowerCase().includes('san antonio') ? 2 : 0);
+          o._cov = coverage(q, o.name);
+          o._score = o._cov * 4 + jaccard(q, o.name) * 2 +
+            ((o.city || '').toLowerCase().includes('san antonio') ? 2 : 0);
         });
         orgs.sort((a, b) => b._score - a._score);
         const best = orgs[0];
         ein = String(best.ein);
         matched = { name: best.name, ein, city: best.city, state: best.state };
-        confidence = best._ov >= 0.6 ? 'high' : 'low';
+        // Strong when the grantee's name is essentially contained in the match.
+        confidence = best._cov >= 0.75 ? 'high' : 'low';
       }
     }
 
@@ -73,6 +85,14 @@ module.exports = async (req, res) => {
       .filter(f => f && (f.totfuncexpns || f.totrevenue))
       .sort((a, b) => (b.tax_prd_yr || 0) - (a.tax_prd_yr || 0));
     const f = filings[0] || null;
+
+    // An active grantee should have a recent 990 on file. No filing, or a stale
+    // one (>3 yrs old), often means the search hit a defunct shell or the wrong
+    // subsidiary rather than the operating entity — flag it for human review.
+    if (confidence === 'high') {
+      const staleBefore = new Date().getFullYear() - 3;
+      if (!f || (f.tax_prd_yr || 0) < staleBefore) confidence = 'low';
+    }
 
     const subLabel = org.subsection_code === 3
       ? '501(c)(3)'
