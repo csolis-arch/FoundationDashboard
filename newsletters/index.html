@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greehey Family Foundation — Newsletter Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1117; --surface:#181c27; --surface2:#1f2436; --border:#2a3050;
+    --gold:#c9a84c; --gold-light:#e2c67a; --green:#2f7d4f; --green-deep:#14532d;
+    --text:#e8eaf0; --text-muted:#8890aa; --text-dim:#555f7a;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif;
+    -webkit-font-smoothing:antialiased; padding:0 0 60px; }
+  a{ text-decoration:none; color:inherit; }
+
+  .arc-header{
+    padding:40px 48px 28px; border-bottom:1px solid var(--border);
+    background:linear-gradient(135deg,#0f1117 60%,#16241c);
+    display:flex; align-items:center; gap:20px; position:relative; overflow:hidden;
+  }
+  .arc-header::before{ content:''; position:absolute; top:-80px; right:-60px; width:340px; height:340px;
+    border-radius:50%; background:radial-gradient(circle,rgba(47,125,79,0.10) 0%,transparent 70%); }
+  .arc-logo{ width:64px; height:64px; flex-shrink:0; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4)); }
+  .arc-eyebrow{ font-family:'Playfair Display',serif; font-size:11px; letter-spacing:0.25em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .arc-title{ font-family:'Playfair Display',serif; font-size:1.9rem; font-weight:700; color:#fff; line-height:1.1; }
+  .arc-sub{ font-size:12.5px; color:var(--text-muted); margin-top:8px; max-width:640px; line-height:1.6; }
+
+  .arc-main{ max-width:1100px; margin:0 auto; padding:32px 48px; }
+  .arc-section-label{ font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--text-dim); margin-bottom:16px; }
+
+  .issue-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr)); gap:22px; }
+  .issue-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    overflow:hidden; display:flex; flex-direction:column;
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .issue-card:hover{ transform:translateY(-3px); border-color:rgba(201,168,76,0.4);
+    box-shadow:0 18px 40px rgba(0,0,0,0.45); }
+  .issue-cover{
+    height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px; background:linear-gradient(135deg,var(--green-deep),#0f1117);
+    border-bottom:1px solid var(--border); position:relative;
+  }
+  .issue-cover img{ width:54px; height:54px; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5)); }
+  .issue-cover .masthead{ font-family:'Playfair Display',serif; font-size:1.5rem; color:#fff; letter-spacing:0.04em; }
+  .issue-body{ padding:18px 20px; display:flex; flex-direction:column; flex:1; }
+  .issue-season{ font-family:'DM Mono',monospace; font-size:11px; color:var(--gold-light);
+    letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px; }
+  .issue-name{ font-family:'Playfair Display',serif; font-size:1.15rem; color:#fff; margin-bottom:8px; }
+  .issue-desc{ font-size:12.5px; color:var(--text-muted); line-height:1.6; flex:1; }
+  .issue-cta{ margin-top:16px; display:inline-flex; align-items:center; gap:7px; align-self:flex-start;
+    background:var(--gold); color:var(--bg); font-weight:600; font-size:12.5px;
+    padding:9px 16px; border-radius:8px; transition:background .18s ease; }
+  .issue-card:hover .issue-cta{ background:var(--gold-light); }
+
+  .arc-note{ margin-top:28px; font-size:11.5px; color:var(--text-dim); line-height:1.7;
+    border-top:1px solid var(--border); padding-top:18px; }
+
+  @media (max-width:560px){
+    .arc-header{ padding:24px 20px 20px; gap:14px; }
+    .arc-main{ padding:24px 20px; }
+    .arc-logo{ width:48px; height:48px; }
+    .arc-title{ font-size:1.4rem; }
+    .arc-sub{ font-size:12px; }
+    .issue-grid{ gap:16px; }
+    .issue-cover{ height:120px; }
+    .issue-cta{ width:100%; justify-content:center; padding:12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="arc-header">
+  <img class="arc-logo" src="../assets/logo.png" alt="Greehey Family Foundation logo">
+  <div>
+    <div class="arc-eyebrow">Greehey Family Foundation</div>
+    <div class="arc-title">Newsletter Archive</div>
+    <div class="arc-sub"><em>Generations</em> — our family newsletter, published two to three times each year. Every issue is preserved here for the family to revisit anytime.</div>
+  </div>
+</div>
+
+<div class="arc-main">
+  <div class="arc-section-label">Published Issues</div>
+  <div class="issue-grid" id="issue-grid"></div>
+  <div class="arc-note">
+    New issues open in a new browser tab and are print-ready. To add a future issue, drop its HTML file into the <code>newsletters/</code> folder and add one entry to the issue list in this page.
+  </div>
+</div>
+
+<script>
+  // To publish a new issue: add an object to the top of this list.
+  const ISSUES = [
+    {
+      masthead: 'Generations',
+      season: 'Summer 2026',
+      name: 'Summer 2026',
+      file: 'generations-summer-2026.html',
+      desc: 'Celebrating 90 years of the Greehey legacy and Haven for Hope at fifteen — with stories on youth heart screenings, a place at camp for every child, building brighter futures, and a look at 2026 giving at a glance.'
+    },
+  ];
+
+  document.getElementById('issue-grid').innerHTML = ISSUES.map(it => `
+    <a class="issue-card" href="${it.file}" target="_blank" rel="noopener">
+      <div class="issue-cover">
+        <img src="../assets/logo.png" alt="">
+        <div class="masthead">${it.masthead}</div>
+      </div>
+      <div class="issue-body">
+        <div class="issue-season">${it.season}</div>
+        <div class="issue-name">${it.name}</div>
+        <div class="issue-desc">${it.desc}</div>
+        <span class="issue-cta">Open Newsletter →</span>
+      </div>
+    </a>
+  `).join('');
+</script>
+
+</body>
+</html>

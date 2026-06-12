@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greehey Family Foundation — FMV & RMD Projection 2024–2036</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f1117; --surface:#181c27; --surface2:#1f2436;
+    --border:#2a3050; --gold:#c9a84c; --gold-light:#e2c67a;
+    --text:#e8eaf0; --text-muted:#8890aa; --text-dim:#555f7a;
+    --green:#4ec9a4; --blue:#5b8dee; --red:#e05c5c;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); padding:40px 48px 60px; }
+
+  .eyebrow { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  h1 { font-family:'Playfair Display',serif; font-size:1.75rem; font-weight:700; color:#fff; margin-bottom:8px; }
+  .subtitle { font-size:12.5px; color:var(--text-dim); line-height:1.75; max-width:820px; margin-bottom:36px; }
+
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:28px 32px; margin-bottom:28px; }
+  .card-title { font-family:'Playfair Display',serif; font-size:12px; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-muted); margin-bottom:22px; }
+  .chart-wrap { position:relative; height:360px; }
+
+  .legend { display:flex; gap:28px; flex-wrap:wrap; margin-top:18px; padding-top:14px; border-top:1px solid var(--border); }
+  .legend-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); }
+  .legend-swatch { width:28px; height:3px; border-radius:2px; }
+
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  thead th {
+    padding:10px 18px; font-size:9.5px; text-transform:uppercase;
+    letter-spacing:0.1em; color:var(--text-dim); font-weight:500;
+    white-space:nowrap; text-align:right; border-bottom:2px solid var(--border);
+  }
+  thead th:first-child { text-align:left; }
+  tbody tr { border-bottom:1px solid rgba(42,48,80,0.35); }
+  tbody tr:hover { background:var(--surface2); }
+  tbody tr.actual-row { background:rgba(201,168,76,0.05); }
+  td { padding:11px 18px; text-align:right; font-family:'DM Mono',monospace; font-size:12.5px; white-space:nowrap; }
+  td:first-child { text-align:left; font-family:'DM Sans',sans-serif; }
+
+  .yr { font-weight:700; color:var(--text); }
+  .badge { display:inline-block; font-size:8.5px; font-family:'DM Sans',sans-serif; padding:1px 7px; border-radius:8px; margin-left:6px; vertical-align:middle; }
+  .badge-actual { background:rgba(201,168,76,0.18); color:var(--gold); }
+  .badge-proj   { background:rgba(91,141,238,0.14); color:var(--blue); }
+
+  .fmv-col   { color:var(--gold-light); }
+  .rmd-col   { color:var(--red); }
+  .admin-col { color:var(--text-dim); }
+  .grnt-col  { color:var(--green); }
+
+  tbody tr.summary-row td { font-weight:600; border-top:2px solid var(--border); padding-top:14px; color:var(--text); }
+
+  .footnote { font-size:10.5px; color:var(--text-dim); line-height:1.8; border-top:1px solid var(--border); padding-top:18px; margin-top:8px; }
+  .footnote strong { color:var(--text-muted); }
+</style>
+</head>
+<body>
+
+<div class="eyebrow">Greehey Family Foundation · Internal Analysis</div>
+<h1>FMV & RMD Projection — 2024 to 2036</h1>
+<p class="subtitle">
+  2024 actuals from IRS Form 990-PF. Forward years assume <strong style="color:var(--text-muted)">7.7% gross annual return</strong> (2024 actual),
+  <strong style="color:var(--text-muted)">5% RMD met in full each year</strong>, and
+  <strong style="color:var(--text-muted)">admin expenses scaled at 0.70% of FMV</strong>
+  — the rate implied by 2024 actuals ($1,751,963 ÷ $251,883,734). Admin scales with AUM because investment management fees are the dominant cost.
+</p>
+
+<!-- Chart -->
+<div class="card">
+  <div class="card-title">FMV Growth vs. Required Distributions</div>
+  <div class="chart-wrap">
+    <canvas id="chart"></canvas>
+  </div>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--gold-light)"></div>
+      Fair Market Value (left axis)
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--red)"></div>
+      RMD Required (right axis)
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--green); border-top:2px dashed var(--green); height:0; margin-top:1.5px"></div>
+      Available for Grants after Admin (right axis)
+    </div>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="card">
+  <div class="card-title">Year-by-Year Detail</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align:left">Year</th>
+        <th style="color:var(--gold)">FMV (Year-End)</th>
+        <th style="color:var(--red)">RMD Required</th>
+        <th style="color:var(--text-dim)">Admin (0.70% FMV)</th>
+        <th style="color:var(--green)">Available for Grants</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<div class="footnote">
+  <strong>Methodology:</strong>
+  FMV projections apply 7.7% gross annual return to prior year-end FMV, then subtract the full RMD.
+  RMD = 5.0% × prior year-end FMV per IRC §4942 — assumed met in full each year so no carryforward accumulates.
+  Admin = 0.70% × prior year-end FMV (2024 990 rate: $1,751,963 ÷ $251,883,734 = 0.696%).
+  Available for Grants = RMD minus Admin.
+  Net FMV growth = 7.7% − 5.0% = <strong>2.7% per year</strong>; both FMV and available grants compound at this rate.
+  <strong>2024 actual note:</strong> The 2024 990 shows qualifying distributions of $7.23M against an $11.69M requirement, a $4.46M shortfall carried to 2025. This table assumes full compliance from 2025 onward.
+  All figures are estimates; actual results will vary with market conditions and investment decisions.
+</div>
+
+<script>
+const RETURN     = 0.077;
+const RMD_RATE   = 0.050;
+const ADMIN_RATE = 0.0070; // 0.70% of prior year FMV
+
+// 2024 actuals
+const rows = [{
+  year: 2024, isActual: true,
+  fmv:   251883734,
+  rmd:   11692575,
+  admin: 1751963,
+  grants: 11692575 - 1751963   // ~$9.94M
+}];
+
+// 2025–2036 projections
+for (let yr = 2025; yr <= 2036; yr++) {
+  const prev  = rows[rows.length - 1];
+  const rmd   = Math.round(prev.fmv * RMD_RATE);
+  const admin = Math.round(prev.fmv * ADMIN_RATE);
+  const fmv   = Math.round(prev.fmv + prev.fmv * RETURN - rmd);
+  rows.push({ year: yr, isActual: false, fmv, rmd, admin, grants: rmd - admin });
+}
+
+// ── Table ──────────────────────────────────────────────────
+function $$(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+const tbody = document.getElementById('tbody');
+rows.forEach(r => {
+  const tr = document.createElement('tr');
+  if (r.isActual) tr.className = 'actual-row';
+  tr.innerHTML = `
+    <td class="yr">${r.year}<span class="badge ${r.isActual ? 'badge-actual' : 'badge-proj'}">${r.isActual ? '990 Actual' : 'Projected'}</span></td>
+    <td class="fmv-col">${$$(r.fmv)}</td>
+    <td class="rmd-col">${$$(r.rmd)}</td>
+    <td class="admin-col">${$$(r.admin)}</td>
+    <td class="grnt-col">${$$(r.grants)}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// Summary row
+const first = rows[0], last = rows[rows.length - 1];
+const summaryTr = document.createElement('tr');
+summaryTr.className = 'summary-row';
+summaryTr.innerHTML = `
+  <td>12-Year Change</td>
+  <td class="fmv-col">+$${((last.fmv - first.fmv)/1e6).toFixed(1)}M</td>
+  <td class="rmd-col">+$${((last.rmd - first.rmd)/1e6).toFixed(1)}M / yr</td>
+  <td class="admin-col">+$${((last.admin - first.admin)/1e3).toFixed(0)}K / yr</td>
+  <td class="grnt-col">+$${((last.grants - first.grants)/1e6).toFixed(1)}M / yr</td>
+`;
+tbody.appendChild(summaryTr);
+
+// ── Chart ──────────────────────────────────────────────────
+const toM = arr => arr.map(v => +(v / 1e6).toFixed(2));
+
+new Chart(document.getElementById('chart'), {
+  type: 'line',
+  data: {
+    labels: rows.map(r => r.year),
+    datasets: [
+      {
+        label: 'FMV ($M)',
+        data: toM(rows.map(r => r.fmv)),
+        borderColor: '#e2c67a',
+        backgroundColor: 'rgba(201,168,76,0.07)',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#e2c67a',
+        pointRadius: rows.map(r => r.isActual ? 6 : 3.5),
+        pointHoverRadius: 7,
+        fill: true,
+        tension: 0.3,
+        yAxisID: 'yFMV'
+      },
+      {
+        label: 'RMD Required ($M)',
+        data: toM(rows.map(r => r.rmd)),
+        borderColor: '#e05c5c',
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        pointBackgroundColor: '#e05c5c',
+        pointRadius: rows.map(r => r.isActual ? 6 : 3.5),
+        pointHoverRadius: 7,
+        tension: 0.3,
+        yAxisID: 'yRMD'
+      },
+      {
+        label: 'Available for Grants ($M)',
+        data: toM(rows.map(r => r.grants)),
+        borderColor: '#4ec9a4',
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        borderDash: [5, 4],
+        pointBackgroundColor: '#4ec9a4',
+        pointRadius: rows.map(r => r.isActual ? 6 : 3),
+        pointHoverRadius: 6,
+        tension: 0.3,
+        yAxisID: 'yRMD'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1c2238',
+        borderColor: '#2a3050',
+        borderWidth: 1,
+        titleColor: '#e2c67a',
+        bodyColor: '#8890aa',
+        padding: 12,
+        callbacks: {
+          label: item => ` ${item.dataset.label}: $${item.parsed.y.toFixed(1)}M`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(42,48,80,0.5)' },
+        ticks: { color: '#555f7a', font: { family: 'DM Mono', size: 11 } }
+      },
+      yFMV: {
+        type: 'linear',
+        position: 'left',
+        grid: { color: 'rgba(42,48,80,0.4)' },
+        ticks: {
+          color: '#e2c67a',
+          font: { family: 'DM Mono', size: 11 },
+          callback: v => '$' + v.toFixed(0) + 'M'
+        },
+        title: { display: true, text: 'Fair Market Value ($M)', color: '#c9a84c', font: { size: 10, family: 'DM Sans' } }
+      },
+      yRMD: {
+        type: 'linear',
+        position: 'right',
+        grid: { drawOnChartArea: false },
+        ticks: {
+          color: '#e05c5c',
+          font: { family: 'DM Mono', size: 11 },
+          callback: v => '$' + v.toFixed(0) + 'M'
+        },
+        title: { display: true, text: 'RMD / Grants ($M)', color: '#e05c5c', font: { size: 10, family: 'DM Sans' } }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

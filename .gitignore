@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+
+# Local temp / scratch files
+_*.cjs
+_*.tmp.*
+*.backup.*
+
+# Source spreadsheets / private working files (data already baked into js/data/)
+*.xlsx
+*.xls
+
+# Vercel
+.vercel/
