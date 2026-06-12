@@ -60,15 +60,44 @@ function renderOverview(year) {
   const novTotal=grants.filter(g=>g.d.startsWith('11')).reduce((s,g)=>s+g.amt,0);
   const novPct=Math.round(novTotal/totalAmt*100);
 
+  // Prior-year reference figures (shown as a neutral "vs YYYY" line, not a
+  // signed delta — the current year may be mid-cycle, which would mislead).
+  const prev = DATA[year - 1];
+  const pg = (prev && prev.grants) || [];
+  const hasPrev = pg.length > 0;
+  const pTot = pg.reduce((s, g) => s + g.amt, 0);
+  const pOrg = new Set(pg.map(g => g.org)).size;
+  const pCats = new Set(pg.map(g => g.cat)).size;
+  const ref = v => hasPrev ? `<div class="kpi-ref">vs ${year - 1}: ${v}</div>` : '';
+
   document.getElementById('header-kpis').innerHTML=`
-    <div class="kpi"><div class="kpi-val">${fmt(totalAmt)}</div><div class="kpi-label">Total Disbursed</div></div>
+    <div class="kpi"><div class="kpi-val">${fmt(totalAmt)}</div><div class="kpi-label">Total Disbursed</div>${ref(fmt(pTot))}</div>
     <div class="kpi-divider"></div>
-    <div class="kpi"><div class="kpi-val">${totalGrants}</div><div class="kpi-label">Grant Transactions</div></div>
+    <div class="kpi"><div class="kpi-val">${totalGrants}</div><div class="kpi-label">Grant Transactions</div>${ref(pg.length)}</div>
     <div class="kpi-divider"></div>
-    <div class="kpi"><div class="kpi-val">${uniqueOrgs}</div><div class="kpi-label">Unique Recipients</div></div>
+    <div class="kpi"><div class="kpi-val">${uniqueOrgs}</div><div class="kpi-label">Unique Recipients</div>${ref(pOrg)}</div>
     <div class="kpi-divider"></div>
-    <div class="kpi"><div class="kpi-val">${cats.length}</div><div class="kpi-label">Focus Areas</div></div>
+    <div class="kpi"><div class="kpi-val">${cats.length}</div><div class="kpi-label">Focus Areas</div>${ref(pCats)}</div>
   `;
+
+  // 5% distribution (RMD) compliance status — the family-facing headline.
+  const comp = d.meta && d.meta.compliance;
+  const statusEl = document.getElementById('overview-status');
+  if (statusEl) {
+    if (comp) {
+      const cls = comp.status === 'ontrack' ? 'ok' : 'warn';
+      const link = comp.linkTab
+        ? `<button class="ov-status-link" onclick="switchTabById('${comp.linkTab}')">View 990 detail →</button>`
+        : '';
+      statusEl.innerHTML = `<div class="ov-status">
+        <span class="status-chip ${cls}" title="${comp.detail || ''}"><span class="status-dot"></span>5% Distribution · ${comp.label}</span>
+        <span class="ov-status-text">${comp.headline}</span>
+        ${link}
+      </div>`;
+    } else {
+      statusEl.innerHTML = '';
+    }
+  }
 
   document.getElementById('insight-grid').innerHTML = d.insightCards
     ? d.insightCards.map(c=>`<div class="insight-card ${c.cls}"><div class="insight-icon">${c.icon}</div><div class="insight-num">${c.num}</div><div class="insight-label">${c.label}</div></div>`).join('')

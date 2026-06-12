@@ -8,6 +8,14 @@ DATA[2025].meta = {
   badge: 'Year-to-Date · San Antonio, TX',
   footerLabel: 'Greehey Family Foundation · 2025 Analysis',
   config: { showMonthly: true },
+  // 5% minimum-distribution (RMD) compliance summary for the family-facing Overview.
+  compliance: {
+    status: 'watch',
+    label: 'Watch',
+    headline: '~$984K below the 2025 minimum distribution',
+    detail: 'The 2025 grant surge (~$13.5M) cured the 2024 carryforward, but an estimated ~$984K gap to the combined 2025 requirement (~$14.48M) remains. The cure window stays open through Dec 31, 2026.',
+    linkTab: 'financial',
+  },
   footerStats: [
     { val: '~$265M',  lbl: 'Est. Current FMV' },
     { val: '~$984K',  lbl: 'Est. 2025 Gap',        color: 'var(--red)' },

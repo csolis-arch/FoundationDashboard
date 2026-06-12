@@ -110,25 +110,42 @@
      TABS
 ══════════════════════════════════════════════════ -->
 <div class="tabs">
-  <div class="tab active" data-tab="overview" onclick="switchTab('overview',this)">📊 Portfolio Overview</div>
+  <!-- Primary, family-facing views -->
+  <div class="tab active" data-tab="overview" onclick="switchTab('overview',this)">📊 Overview</div>
   <div class="tab" data-tab="registry" onclick="switchTab('registry',this)">📋 All Grants</div>
-  <div class="tab" data-tab="impact" onclick="switchTab('impact',this)">🌟 Estimated Impact</div>
-  <div class="tab" data-tab="funding" onclick="switchTab('funding',this)">💡 Type of Funding</div>
-  <div class="tab" data-tab="waterfall" onclick="switchTab('waterfall',this)">📅 Pledge Waterfall</div>
-  <div class="tab" data-tab="dependency" onclick="switchTab('dependency',this)">⚠️ Org Dependency Risk <span class="tab-badge">6</span></div>
-  <div class="tab" data-tab="financial" onclick="switchTab('financial',this)">📈 990 Financial Analysis <span class="tab-badge orange">2</span></div>
-  <div class="tab" data-tab="heatmap" onclick="switchTab('heatmap',this)">🗺️ Grant Map</div>
-  <div class="tab" data-tab="rmd" onclick="switchTab('rmd',this)">📐 RMD Projection</div>
-  <div class="tab" data-tab="allocator" onclick="switchTab('allocator',this)">🎯 Grant Allocator</div>
+  <div class="tab" data-tab="impact" onclick="switchTab('impact',this)">🌟 Impact</div>
+  <!-- Grouped analytical views (board / staff) -->
+  <div class="tab-menu" id="menu-analysis">
+    <button class="tab-menu-btn" onclick="toggleMenu('analysis',event)">📈 Analysis <span class="menu-caret">▾</span></button>
+    <div class="tab-menu-panel">
+      <div class="menu-item" data-tab="funding" onclick="switchTab('funding',this)">💡 Type of Funding</div>
+      <div class="menu-item" data-tab="waterfall" onclick="switchTab('waterfall',this)">📅 Pledge Waterfall</div>
+      <div class="menu-item" data-tab="dependency" onclick="switchTab('dependency',this)">⚠️ Org Dependency Risk</div>
+      <div class="menu-item" data-tab="financial" onclick="switchTab('financial',this)">📈 990 Financial Analysis</div>
+      <div class="menu-item" data-tab="rmd" onclick="switchTab('rmd',this)">📐 RMD Projection</div>
+    </div>
+  </div>
+  <!-- Interactive utilities -->
+  <div class="tab-menu" id="menu-tools">
+    <button class="tab-menu-btn" onclick="toggleMenu('tools',event)">🛠️ Tools <span class="menu-caret">▾</span></button>
+    <div class="tab-menu-panel">
+      <div class="menu-item" data-tab="heatmap" onclick="switchTab('heatmap',this)">🗺️ Grant Map</div>
+      <div class="menu-item" data-tab="allocator" onclick="switchTab('allocator',this)">🎯 Grant Allocator</div>
+    </div>
+  </div>
 </div>
 <!-- Mobile-only navigation (replaces the tab row on small screens) -->
 <select class="mobile-nav" id="mobile-nav" onchange="switchTabById(this.value)" aria-label="Select dashboard view">
-  <option value="overview">📊 Portfolio Overview</option>
-  <option value="registry">📋 All Grants</option>
-  <option value="impact">🌟 Estimated Impact</option>
-  <option value="funding">💡 Type of Funding</option>
-  <option value="waterfall">📅 Pledge Waterfall</option>
-  <option value="dependency">⚠️ Org Dependency Risk</option>
+  <optgroup label="Main">
+    <option value="overview">📊 Overview</option>
+    <option value="registry">📋 All Grants</option>
+    <option value="impact">🌟 Impact</option>
+  </optgroup>
+  <optgroup label="Analysis">
+    <option value="funding">💡 Type of Funding</option>
+    <option value="waterfall">📅 Pledge Waterfall</option>
+    <option value="dependency">⚠️ Org Dependency Risk</option>
+  </optgroup>
 </select>
 
 <!-- ══════════════════════════════════════════════════
@@ -137,6 +154,8 @@
 <div class="tab-section active" id="section-overview">
 <div class="main">
 <div id="overview-content">
+
+  <div id="overview-status"></div>
 
   <div class="insight-grid fade-in" id="insight-grid"></div>
 
@@ -148,6 +167,7 @@
       </div>
       <div id="donut-detail" style="flex:1;min-width:260px;padding-top:8px"></div>
     </div>
+    <div style="text-align:right;margin-top:10px"><button class="ov-detail-link" onclick="switchTabById('funding')">Full funding-type analysis →</button></div>
   </div>
 
   <div class="card grid-full fade-in" id="month-card">
@@ -159,14 +179,20 @@
 
   <div class="grid2 fade-in">
     <div class="card">
-      <div class="card-title">Top 15 Recipients by Total Grants</div>
+      <div class="ov-card-head">
+        <div class="card-title" style="margin-bottom:0">Top 15 Recipients by Total Grants</div>
+        <button class="ov-detail-link" onclick="switchTabById('dependency')">Dependency &amp; risk →</button>
+      </div>
       <table class="recipients-table" id="recipients-table"></table>
     </div>
     <div class="card">
       <div class="card-title">Grant Size Distribution</div>
       <div id="dist-section"></div>
       <div style="margin-top:28px">
-        <div class="card-title" style="margin-bottom:14px">Active Multi-Year Pledges</div>
+        <div class="ov-card-head" style="margin-bottom:14px">
+          <div class="card-title" style="margin-bottom:0">Active Multi-Year Pledges</div>
+          <button class="ov-detail-link" onclick="switchTabById('waterfall')">Full waterfall →</button>
+        </div>
         <div id="pledge-section"></div>
       </div>
     </div>

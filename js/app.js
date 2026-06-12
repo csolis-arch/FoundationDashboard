@@ -28,14 +28,24 @@ function renderMeta(year) {
       const target = meta.target;
       const pct = Math.round(committed / target * 100);
       const remaining = Math.max(0, target - committed);
+      // Split committed dollars by grant cycle (months 1–6 = June cycle, 7–12 = November cycle).
+      const juneAmt = grants.filter(g => parseInt(g.d.split('/')[0], 10) <= 6).reduce((s, g) => s + g.amt, 0);
+      const novAmt = committed - juneAmt;
+      const junePct = juneAmt / target * 100;
+      const novPct = novAmt / target * 100;
       document.getElementById('target-bar-inner').innerHTML = `
         <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;flex-shrink:0">${year} Distribution<br>Target</div>
         <div style="flex:1;min-width:0">
           <div style="position:relative;height:48px;border-radius:8px;overflow:hidden;background:var(--surface2)">
-            <div style="position:absolute;top:0;left:0;height:100%;width:${pct}%;background:linear-gradient(90deg,#c9a84c,#3aaa88)"></div>
+            <div style="position:absolute;top:0;left:0;height:100%;width:${junePct}%;background:linear-gradient(90deg,#c9a84c,#e2c67a)"></div>
+            <div style="position:absolute;top:0;left:${junePct}%;height:100%;width:${novPct}%;background:linear-gradient(90deg,#4ec9a4,#5b8dee)"></div>
             <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 12px">
-              <span style="font-size:12px;color:#fff;font-weight:600;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,0.4)">${fmt(committed)} committed · ${pct}% of ${fmt(target)} target</span>
+              <span style="font-size:12px;color:#fff;font-weight:600;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,0.5)">${fmt(committed)} committed · ${pct}% of ${fmt(target)} target</span>
             </div>
+          </div>
+          <div style="display:flex;gap:16px;margin-top:7px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim)"><span style="width:9px;height:9px;border-radius:2px;background:#c9a84c;flex-shrink:0"></span>June cycle ${fmt(juneAmt)}</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim)"><span style="width:9px;height:9px;border-radius:2px;background:#4ec9a4;flex-shrink:0"></span>November cycle ${novAmt > 0 ? fmt(novAmt) : '— upcoming'}</div>
           </div>
         </div>
         <div class="rmd-divider"></div>
@@ -88,13 +98,23 @@ function setYear(year) {
 // TAB SWITCHING
 // ─────────────────────────────────────────────────────────────
 function switchTab(id, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab, .menu-item, .tab-menu-btn').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-  if (el) el.classList.add('active');
-  document.getElementById('section-' + id).classList.add('active');
+  // Activate the matching nav element(s) — primary tab or dropdown item.
+  document.querySelectorAll('[data-tab="' + id + '"]').forEach(t => t.classList.add('active'));
+  // If the tab lives inside a dropdown, light up that menu's button too.
+  const item = document.querySelector('.menu-item[data-tab="' + id + '"]');
+  if (item) {
+    const menu = item.closest('.tab-menu');
+    const btn = menu && menu.querySelector('.tab-menu-btn');
+    if (btn) btn.classList.add('active');
+  }
+  const section = document.getElementById('section-' + id);
+  if (section) section.classList.add('active');
   // Keep the mobile dropdown in sync with whichever tab is active.
   const sel = document.getElementById('mobile-nav');
   if (sel && sel.value !== id) sel.value = id;
+  closeMenus();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
   // Lazy-load iframes on first click
@@ -121,9 +141,27 @@ function switchTab(id, el) {
 
 // Switch tab by id (used by the mobile dropdown nav).
 function switchTabById(id) {
-  const tab = document.querySelector('.tab[data-tab="' + id + '"]');
+  const tab = document.querySelector('[data-tab="' + id + '"]');
   switchTab(id, tab);
 }
+
+// ─────────────────────────────────────────────────────────────
+// DESKTOP DROPDOWN MENUS (Analysis ▾ / Tools ▾)
+// ─────────────────────────────────────────────────────────────
+function toggleMenu(name, ev) {
+  if (ev) ev.stopPropagation();
+  const m = document.getElementById('menu-' + name);
+  if (!m) return;
+  const wasOpen = m.classList.contains('open');
+  closeMenus();
+  if (!wasOpen) m.classList.add('open');
+}
+function closeMenus() {
+  document.querySelectorAll('.tab-menu.open').forEach(m => m.classList.remove('open'));
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('.tab-menu')) closeMenus();
+});
 
 // ─────────────────────────────────────────────────────────────
 // NEWSLETTERS (opened from the header button, not the tab row)

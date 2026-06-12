@@ -16,6 +16,13 @@ DATA[2026].meta = {
     cycleMonth: 6,
     cycleLabel: 'June',
   },
+  // 5% minimum-distribution (RMD) compliance summary for the family-facing Overview.
+  compliance: {
+    status: 'ontrack',
+    label: 'On Track',
+    headline: '$15M target set above the ~$12.6M required minimum',
+    detail: 'The 2026 distribution target ($15M) is set comfortably above the estimated ~$12.6M minimum required payout. $8.55M is committed in the June cycle; the November cycle is expected to close the remainder.',
+  },
   // Sticky-footer stats (committed % computed at render against target)
   footerStats: [
     { val: '$8.55M', lbl: 'Committed (June Cycle)', color: 'var(--gold-light)' },
