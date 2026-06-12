@@ -76,11 +76,11 @@ function regApply() {
   tbody.innerHTML = rows.map((g, i) => {
     const color = CAT_COLORS[g.cat] || '#888';
     return `<tr>
-      <td style="color:var(--text-dim);font-family:'DM Mono',monospace;font-size:12px">${i + 1}</td>
-      <td>${_regEsc(g.org)}</td>
-      <td style="color:var(--text-muted);font-size:12px">${g.memo ? _regEsc(g.memo) : '<span style="color:var(--text-dim)">—</span>'}</td>
-      <td><span class="cat-pill" style="background:${color}22;color:${color}">${_regEsc(g.cat)}</span></td>
-      <td class="amt-cell">${fmtFull(g.amt)}</td>
+      <td class="reg-num" style="color:var(--text-dim);font-family:'DM Mono',monospace;font-size:12px">${i + 1}</td>
+      <td data-label="Organization">${_regEsc(g.org)}</td>
+      <td data-label="Purpose" data-block style="color:var(--text-muted);font-size:12px">${g.memo ? _regEsc(g.memo) : '<span style="color:var(--text-dim)">—</span>'}</td>
+      <td data-label="Focus Area"><span class="cat-pill" style="background:${color}22;color:${color}">${_regEsc(g.cat)}</span></td>
+      <td data-label="Amount" class="amt-cell">${fmtFull(g.amt)}</td>
     </tr>`;
   }).join('');
 

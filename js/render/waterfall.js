@@ -59,7 +59,7 @@ function renderWaterfall(year) {
     const paidAmt=p.schedule.filter(s=>s.paid).reduce((s,x)=>s+x.amt,0);
     const pct=Math.round(paidAmt/p.totalPledge*100);
     const remaining=p.totalPledge-paidAmt;
-    regHtml+=`<tr><td style="font-weight:500;color:var(--text)">${p.org}</td><td style="font-size:11px;color:var(--text-dim)">${p.category}</td><td class="mono gold-text">${fmtFull(p.totalPledge)}</td><td class="mono" style="color:var(--green)">${fmtFull(paidAmt)}</td><td><div style="display:flex;align-items:center;gap:8px"><div class="pct-wrap"><div class="pct-fill" style="width:${pct}%;background:${p.color}"></div></div><span class="mono dim" style="font-size:11px">${pct}%</span></div></td><td class="mono" style="color:${remaining>0?'var(--red)':'var(--text-dim)'}">${remaining>0?fmtFull(remaining):'—'}</td><td>${statusLabel(p)}</td></tr>`;
+    regHtml+=`<tr><td data-label="Organization" style="font-weight:500;color:var(--text)">${p.org}</td><td data-label="Category" style="font-size:11px;color:var(--text-dim)">${p.category}</td><td data-label="Total Pledge" class="mono gold-text">${fmtFull(p.totalPledge)}</td><td data-label="Paid to Date" class="mono" style="color:var(--green)">${fmtFull(paidAmt)}</td><td data-label="% Complete"><div style="display:flex;align-items:center;gap:8px"><div class="pct-wrap"><div class="pct-fill" style="width:${pct}%;background:${p.color}"></div></div><span class="mono dim" style="font-size:11px">${pct}%</span></div></td><td data-label="Remaining" class="mono" style="color:${remaining>0?'var(--red)':'var(--text-dim)'}">${remaining>0?fmtFull(remaining):'—'}</td><td data-label="Status">${statusLabel(p)}</td></tr>`;
   });
   document.getElementById('pledge-registry').innerHTML=regHtml+'</tbody>';
 }

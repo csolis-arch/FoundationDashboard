@@ -140,7 +140,7 @@ function renderOverview(year) {
   let tblHtml=`<thead><tr><th style="width:28px">#</th><th>Organization</th><th>Area</th><th>Grants</th><th>Total</th></tr></thead><tbody>`;
   topOrgs.forEach(([org,amt],i)=>{
     const color=CAT_COLORS[orgCats[org]]||'#888',cnt=orgCounts[org],short=org.length>32?org.slice(0,31)+'…':org;
-    tblHtml+=`<tr><td><span class="rank-badge${i<3?' top3':''}">${i+1}</span></td><td>${short}${cnt>1?`<span class="multi-grant">${cnt}×</span>`:''}</td><td><span class="cat-pill" style="background:${color}22;color:${color}">${orgCats[org].split(' ')[0]}</span></td><td style="text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim)">${cnt}</td><td class="amt-cell">${fmtFull(amt)}</td></tr>`;
+    tblHtml+=`<tr><td class="rank-cell" data-label="Rank"><span class="rank-badge${i<3?' top3':''}">${i+1}</span></td><td data-label="Organization">${short}${cnt>1?`<span class="multi-grant">${cnt}×</span>`:''}</td><td data-label="Area"><span class="cat-pill" style="background:${color}22;color:${color}">${orgCats[org].split(' ')[0]}</span></td><td data-label="Grants" style="text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim)">${cnt}</td><td data-label="Total" class="amt-cell">${fmtFull(amt)}</td></tr>`;
   });
   document.getElementById('recipients-table').innerHTML=tblHtml+'</tbody>';
 

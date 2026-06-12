@@ -112,6 +112,9 @@
   .tab:hover { color: var(--text); }
   .tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
 
+  /* Mobile dropdown nav — hidden on desktop, shown at the phone breakpoint */
+  .mobile-nav { display: none; }
+
   /* ── Tab sections ── */
   .tab-section { display: none; }
   .tab-section.active { display: block; }
@@ -475,3 +478,104 @@
     cursor: pointer; transition: background 0.2s, border-color 0.2s;
   }
   .newsletter-btn:hover { background: rgba(201,168,76,0.16); border-color: var(--gold); }
+
+  /* ════════════════════════════════════════════════════════════
+     PHONE LAYOUT (≤640px) — single-column, card-based, decluttered.
+     Heavy desktop-only pieces are hidden per product decision.
+  ════════════════════════════════════════════════════════════ */
+  @media (max-width: 640px) {
+    body { font-size: 13.5px; padding-bottom: 0; }
+    .main { padding: 18px 14px 36px; }
+
+    /* Header: stack brand over KPIs; tighten type */
+    .header { padding: 20px 16px 16px; }
+    .header-top { gap: 14px; }
+    h1 { font-size: 1.35rem; }
+    .header-kpis { gap: 0 18px; width: 100%; }
+    .kpi { text-align: left; flex: 1 1 40%; }
+    .kpi-val { font-size: 1.4rem; }
+    .kpi-divider { display: none; }
+
+    /* Navigation: hide the tab row, show the dropdown */
+    .tabs { display: none; }
+    .mobile-nav {
+      display: block; width: 100%;
+      background: var(--surface2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9a84c' d='M6 8 0 0h12z'/%3E%3C/svg%3E") no-repeat right 16px center;
+      border: none; border-bottom: 1px solid var(--border);
+      color: var(--gold-light); font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 600; padding: 14px 40px 14px 16px;
+      -webkit-appearance: none; appearance: none; cursor: pointer;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .mobile-nav:focus { outline: none; }
+
+    /* Top RMD/target bar: keep the progress bar, drop the number cluster */
+    .rmd-bar { padding: 0 16px; }
+    .rmd-inner { padding: 12px 0; gap: 10px; }
+    .rmd-stats, .rmd-divider, .status-chip { display: none !important; }
+    #target-bar-inner > div:last-child { display: none !important; }
+    #target-bar-inner { gap: 12px !important; }
+    .rmd-label { width: auto; }
+
+    /* Sticky footer hidden (reclaims screen) */
+    .sticky-footer { display: none; }
+
+    /* Single column everywhere */
+    .grid2, .grid3 { grid-template-columns: 1fr; gap: 16px; }
+    .insight-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .insight-num { font-size: 1.3rem; }
+    .card { padding: 16px; }
+    /* Override inline 2-col grids (strategic notes + RMD outlook) */
+    #insights-text { grid-template-columns: 1fr !important; }
+    #overview-outlook > div { grid-template-columns: 1fr !important; gap: 20px !important; }
+
+    /* Donut centers */
+    .donut-wrap { justify-content: center; }
+
+    /* Bar rows: shrink fixed label columns so bars stay meaningful */
+    .cat-label { width: 110px; font-size: 12px; }
+    .cat-amt { width: auto; }
+    .cat-count { display: none; }
+    .dist-label { width: 84px; font-size: 11px; }
+
+    /* KPI boxes (waterfall/dependency) stack 2-up */
+    .kpi-row { flex-wrap: wrap; gap: 8px; }
+    .kpi-box { flex: 1 1 44%; border-radius: var(--radius) !important; border: 1px solid var(--border) !important; }
+    .kpi-box .kpi-val2 { font-size: 1.4rem; }
+
+    /* ── Tables → stacked cards ── */
+    .recipients-table, .reg-table, .pledge-table, .dep-table { display: block; }
+    .recipients-table thead, .reg-table thead, .pledge-table thead, .dep-table thead { display: none; }
+    .recipients-table tbody, .reg-table tbody, .pledge-table tbody, .dep-table tbody { display: block; }
+    .recipients-table tr, .reg-table tr, .pledge-table tr, .dep-table tr {
+      display: block; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 14px; margin-bottom: 10px;
+    }
+    .recipients-table td, .reg-table td, .pledge-table td, .dep-table td {
+      display: flex; justify-content: space-between; align-items: center; gap: 14px;
+      padding: 5px 0 !important; border: none !important; text-align: right;
+      font-size: 13px; vertical-align: middle;
+    }
+    .recipients-table td:last-child, .reg-table td:last-child,
+    .pledge-table td:last-child, .dep-table td:last-child { text-align: right; }
+    .recipients-table td[data-label]:before, .reg-table td[data-label]:before,
+    .pledge-table td[data-label]:before, .dep-table td[data-label]:before {
+      content: attr(data-label); flex-shrink: 0; text-align: left;
+      font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim);
+    }
+    /* Full-width block cells (long text / composite content) */
+    .recipients-table td[data-block], .reg-table td[data-block],
+    .pledge-table td[data-block], .dep-table td[data-block] {
+      flex-direction: column; align-items: stretch; text-align: left; gap: 4px;
+    }
+    td[data-block] > div { width: 100%; }
+    /* Hide the row-number cell inside cards */
+    .reg-num, .rank-cell { display: none !important; }
+
+    /* Registry controls: full-width export button */
+    .reg-export { width: 100%; text-align: center; }
+
+    /* Embedded desktop-only tools hidden on phones */
+    #section-heatmap, #section-rmd, #section-allocator { display: none !important; }
+  }

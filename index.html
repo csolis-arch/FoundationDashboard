@@ -110,17 +110,26 @@
      TABS
 ══════════════════════════════════════════════════ -->
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('overview',this)">📊 Portfolio Overview</div>
-  <div class="tab" onclick="switchTab('registry',this)">📋 All Grants</div>
-  <div class="tab" onclick="switchTab('impact',this)">🌟 Estimated Impact</div>
-  <div class="tab" onclick="switchTab('funding',this)">💡 Type of Funding</div>
-  <div class="tab" onclick="switchTab('waterfall',this)">📅 Pledge Waterfall</div>
-  <div class="tab" onclick="switchTab('dependency',this)">⚠️ Org Dependency Risk <span class="tab-badge">6</span></div>
-  <div class="tab" onclick="switchTab('financial',this)">📈 990 Financial Analysis <span class="tab-badge orange">2</span></div>
-  <div class="tab" onclick="switchTab('heatmap',this)">🗺️ Grant Map</div>
-  <div class="tab" onclick="switchTab('rmd',this)">📐 RMD Projection</div>
-  <div class="tab" onclick="switchTab('allocator',this)">🎯 Grant Allocator</div>
+  <div class="tab active" data-tab="overview" onclick="switchTab('overview',this)">📊 Portfolio Overview</div>
+  <div class="tab" data-tab="registry" onclick="switchTab('registry',this)">📋 All Grants</div>
+  <div class="tab" data-tab="impact" onclick="switchTab('impact',this)">🌟 Estimated Impact</div>
+  <div class="tab" data-tab="funding" onclick="switchTab('funding',this)">💡 Type of Funding</div>
+  <div class="tab" data-tab="waterfall" onclick="switchTab('waterfall',this)">📅 Pledge Waterfall</div>
+  <div class="tab" data-tab="dependency" onclick="switchTab('dependency',this)">⚠️ Org Dependency Risk <span class="tab-badge">6</span></div>
+  <div class="tab" data-tab="financial" onclick="switchTab('financial',this)">📈 990 Financial Analysis <span class="tab-badge orange">2</span></div>
+  <div class="tab" data-tab="heatmap" onclick="switchTab('heatmap',this)">🗺️ Grant Map</div>
+  <div class="tab" data-tab="rmd" onclick="switchTab('rmd',this)">📐 RMD Projection</div>
+  <div class="tab" data-tab="allocator" onclick="switchTab('allocator',this)">🎯 Grant Allocator</div>
 </div>
+<!-- Mobile-only navigation (replaces the tab row on small screens) -->
+<select class="mobile-nav" id="mobile-nav" onchange="switchTabById(this.value)" aria-label="Select dashboard view">
+  <option value="overview">📊 Portfolio Overview</option>
+  <option value="registry">📋 All Grants</option>
+  <option value="impact">🌟 Estimated Impact</option>
+  <option value="funding">💡 Type of Funding</option>
+  <option value="waterfall">📅 Pledge Waterfall</option>
+  <option value="dependency">⚠️ Org Dependency Risk</option>
+</select>
 
 <!-- ══════════════════════════════════════════════════
      TAB 1 — PORTFOLIO OVERVIEW

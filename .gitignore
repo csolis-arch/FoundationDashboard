@@ -10,6 +10,7 @@ desktop.ini
 
 # Local temp / scratch files
 _*.cjs
+_*.txt
 _*.tmp.*
 *.backup.*
 

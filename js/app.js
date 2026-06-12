@@ -90,8 +90,11 @@ function setYear(year) {
 function switchTab(id, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-  el.classList.add('active');
+  if (el) el.classList.add('active');
   document.getElementById('section-' + id).classList.add('active');
+  // Keep the mobile dropdown in sync with whichever tab is active.
+  const sel = document.getElementById('mobile-nav');
+  if (sel && sel.value !== id) sel.value = id;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
   // Lazy-load iframes on first click
@@ -114,6 +117,12 @@ function switchTab(id, el) {
       if (!el.classList.contains('visible')) el.classList.add('visible');
     });
   }
+}
+
+// Switch tab by id (used by the mobile dropdown nav).
+function switchTabById(id) {
+  const tab = document.querySelector('.tab[data-tab="' + id + '"]');
+  switchTab(id, tab);
 }
 
 // ─────────────────────────────────────────────────────────────
