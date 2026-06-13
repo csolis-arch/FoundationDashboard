@@ -8,6 +8,7 @@ let _regSearch = '';
 let _regCat = null;            // active focus-area filter, or null for all
 let _regSortKey = 'amt';       // 'org' | 'memo' | 'cat' | 'amt'
 let _regSortDir = -1;          // 1 asc, -1 desc
+let _regOrgTotals = {};        // org name -> total committed this year (for 990 budget-share)
 
 function renderRegistry(year) {
   const d = DATA[year] || {};
@@ -27,6 +28,13 @@ function renderRegistry(year) {
     if (box) box.value = '';
   }
   _regGrants = grants;
+
+  // Per-org committed total for the year — passed to the 990 lookup so it can
+  // express our grant as a share of the grantee's budget even when a single org
+  // received several line items.
+  const orgTotals = {};
+  grants.forEach(g => { orgTotals[g.org] = (orgTotals[g.org] || 0) + g.amt; });
+  _regOrgTotals = orgTotals;
 
   // Build focus-area chips (categories present this year, by total descending).
   const catTotals = {};
@@ -77,7 +85,7 @@ function regApply() {
     const color = CAT_COLORS[g.cat] || '#888';
     return `<tr>
       <td class="reg-num" style="color:var(--text-dim);font-family:'DM Mono',monospace;font-size:12px">${i + 1}</td>
-      <td data-label="Organization">${_regEsc(g.org)}</td>
+      <td data-label="Organization">${_regEsc(g.org)}<button class="dep-990-btn" data-org="${_regAttr(g.org)}" data-total="${_regOrgTotals[g.org] || g.amt}" onclick="regLookup(this)" title="Pull this grantee's latest IRS Form 990">IRS&nbsp;990 ▾</button></td>
       <td data-label="Purpose" data-block style="color:var(--text-muted);font-size:12px">${g.memo ? _regEsc(g.memo) : '<span style="color:var(--text-dim)">—</span>'}</td>
       <td data-label="Focus Area"><span class="cat-pill" style="background:${color}22;color:${color}">${_regEsc(g.cat)}</span></td>
       <td data-label="Amount" class="amt-cell">${fmtFull(g.amt)}</td>
@@ -129,6 +137,18 @@ function regSort(key) {
 
 function _regEsc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Escape for use inside a double-quoted HTML attribute (org names with quotes).
+function _regAttr(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Live IRS 990 lookup for any registry row. Reuses the shared expander defined
+// in dependency.js; the registry table has 5 columns.
+function regLookup(btn) {
+  grantee990Expand(btn, 5);
 }
 
 function regExportCsv() {

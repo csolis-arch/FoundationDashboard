@@ -140,7 +140,11 @@ function _depDetailInner(d, org, ourTotal) {
     <div class="dep-detail-src">Source: ${d.source}. Figures reflect the most recent electronically filed Form 990 — confirm the matched entity above before relying on these numbers.${verifyLink}</div>`;
 }
 
-function depLookup(btn) {
+// Shared expand/collapse + fetch for any table row carrying a 990 lookup button
+// (data-org, optional data-total). `colspan` matches the host table's columns so
+// the inserted detail row spans the full width. Used by both the Dependency Risk
+// matrix and the All-Grants registry.
+function grantee990Expand(btn, colspan) {
   const org = btn.getAttribute('data-org');
   const total = parseFloat(btn.getAttribute('data-total')) || 0;
   const tr = btn.closest('tr');
@@ -152,7 +156,7 @@ function depLookup(btn) {
   }
   const detail = document.createElement('tr');
   detail.className = 'dep-detail-row';
-  detail.innerHTML = '<td colspan="6"><div class="dep-detail"><div class="dep-detail-loading">Pulling IRS 990 data from ProPublica…</div></div></td>';
+  detail.innerHTML = '<td colspan="' + colspan + '"><div class="dep-detail"><div class="dep-detail-loading">Pulling IRS 990 data from ProPublica…</div></div></td>';
   tr.parentNode.insertBefore(detail, tr.nextSibling);
   btn.classList.add('open');
   const cell = detail.querySelector('.dep-detail');
@@ -163,3 +167,5 @@ function depLookup(btn) {
       cell.innerHTML = '<div class="dep-detail-err">Could not load 990 data. This live lookup only works on the deployed site — it needs the server function, so it won\'t run when the dashboard is opened directly from disk.</div>';
     });
 }
+
+function depLookup(btn) { grantee990Expand(btn, 6); }
