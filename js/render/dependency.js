@@ -88,6 +88,23 @@ function _depDetailInner(d, org, ourTotal) {
   const m = d.matched, fin = d.financials, irs = d.irs || {};
   const einFmt = m.ein ? String(m.ein).replace(/^(\d{2})(\d+)$/, '$1-$2') : '';
   const low = d.confidence === 'low';
+  const name = m.name || 'Name not published';
+
+  const verifyLink = d.profileUrl
+    ? ' <a class="dep-detail-link" href="' + d.profileUrl + '" target="_blank" rel="noopener">Verify on ProPublica ↗</a>'
+    : '';
+
+  // Detail record exists in the IRS search index, but ProPublica has no
+  // machine-readable 990 to show — surface the match + a plain-English reason
+  // instead of a raw error so the row is still actionable.
+  if (d.noDetail) {
+    return `<div class="dep-detail-head">
+        <div><span class="dep-detail-name">${name}</span> ${m.ein ? '<span class="dep-detail-ein">EIN ' + einFmt + '</span>' : ''}</div>
+        <span class="dep-match-flag warn">⚠ No 990 financials</span>
+      </div>
+      <div class="dep-detail-note">${d.note || 'No detailed filing available.'}</div>
+      <div class="dep-detail-src">Source: ${d.source}.${verifyLink}</div>`;
+  }
 
   const items = [];
   items.push(_depStat('IRS status', irs.subsection
@@ -114,12 +131,8 @@ function _depDetailInner(d, org, ourTotal) {
     ? '<span class="dep-match-flag warn">⚠ Possible match — verify</span>'
     : '<span class="dep-match-flag ok">✓ Matched</span>';
 
-  const verifyLink = d.profileUrl
-    ? ' <a class="dep-detail-link" href="' + d.profileUrl + '" target="_blank" rel="noopener">Verify on ProPublica ↗</a>'
-    : '';
-
   return `<div class="dep-detail-head">
-      <div><span class="dep-detail-name">${m.name}</span> <span class="dep-detail-ein">EIN ${einFmt}${m.city ? (' · ' + m.city + ', ' + m.state) : ''}</span></div>
+      <div><span class="dep-detail-name">${name}</span> <span class="dep-detail-ein">EIN ${einFmt}${m.city ? (' · ' + m.city + ', ' + m.state) : ''}</span></div>
       ${flag}
     </div>
     <div class="dep-detail-grid">${items.join('')}</div>

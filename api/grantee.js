@@ -37,7 +37,11 @@ function jaccard(a, b) {
 
 async function getJSON(url) {
   const r = await fetch(url, { headers: { 'User-Agent': 'GFF-Dashboard/1.0' } });
-  if (!r.ok) throw new Error('upstream ' + r.status);
+  if (!r.ok) {
+    const err = new Error('upstream ' + r.status);
+    err.status = r.status;
+    throw err;
+  }
   return r.json();
 }
 
@@ -74,8 +78,38 @@ module.exports = async (req, res) => {
       return;
     }
 
-    const od = await getJSON(`${PP}/organizations/${ein}.json`);
-    const org = od.organization || {};
+    // Deep link to the matched org's ProPublica profile so a reviewer can
+    // open the underlying filings and confirm we matched the right entity.
+    const profileUrl = 'https://projects.propublica.org/nonprofits/organizations/' + ein;
+
+    // The org-detail endpoint can 404 even when search returned a name+EIN —
+    // typically for 990-N "e-postcard" filers, auto-revoked orgs, or subordinates
+    // under a group ruling that carry no machine-readable financial record.
+    // In that case, still return what we DID find (name/EIN) plus a plain-English
+    // note, rather than discarding everything as a raw "upstream 404".
+    let od, org;
+    try {
+      od = await getJSON(`${PP}/organizations/${ein}.json`);
+      org = od.organization || {};
+    } catch (e) {
+      const is404 = (e && e.status === 404);
+      res.status(200).json({
+        query: q,
+        matched: matched || { name: null, ein: String(ein) },
+        confidence: 'low',
+        noDetail: true,
+        note: is404
+          ? 'No machine-readable Form 990 financials are published for this EIN. This is common for small organizations that file a 990-N "e-postcard" (under ~$50K in revenue), groups covered under a parent\u2019s group ruling, or organizations whose exempt status has lapsed. Use the link below to confirm on ProPublica.'
+          : 'Could not retrieve this organization\u2019s detailed filing from ProPublica right now. The name match below is from the IRS search index; verify directly before relying on it.',
+        irs: { subsection: null, rulingYear: null },
+        financials: null,
+        history: [],
+        profileUrl,
+        source: 'ProPublica Nonprofit Explorer',
+      });
+      return;
+    }
+
     if (!matched) {
       matched = { name: org.name, ein: String(ein), city: org.city, state: org.state };
       confidence = 'high';
@@ -106,10 +140,6 @@ module.exports = async (req, res) => {
     const subLabel = org.subsection_code === 3
       ? '501(c)(3)'
       : (org.subsection_code ? '501(c)(' + org.subsection_code + ')' : null);
-
-    // Deep link to the matched org's ProPublica profile so a reviewer can
-    // open the underlying filings and confirm we matched the right entity.
-    const profileUrl = 'https://projects.propublica.org/nonprofits/organizations/' + ein;
 
     res.status(200).json({
       query: q,
