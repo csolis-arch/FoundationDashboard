@@ -12,6 +12,13 @@
 const YEARS_ENABLED = [2026];
 const YOY_ENABLED = YEARS_ENABLED.length >= 2;
 
+// ─────────────────────────────────────────────────────────────
+// OVERALL STRATEGY TAB
+// Toggles the "Overall Strategy" tab (under Tools). Hidden for now;
+// flip to true to restore it (no other changes needed).
+// ─────────────────────────────────────────────────────────────
+const STRATEGY_ENABLED = false;
+
 let currentYear = YEARS_ENABLED[YEARS_ENABLED.length - 1];
 
 // ─────────────────────────────────────────────────────────────
@@ -108,7 +115,7 @@ function setYear(year) {
   // year), but re-rendering on each switch is cheap and keeps it in sync.
   if (YOY_ENABLED && typeof renderYoY === 'function') renderYoY();
   // Overall Strategy is a 2026-focused analyst synthesis; render once available.
-  if (typeof renderStrategy === 'function') renderStrategy();
+  if (STRATEGY_ENABLED && typeof renderStrategy === 'function') renderStrategy();
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -196,6 +203,13 @@ function applyYearVisibility() {
     document.querySelectorAll('.menu-item[data-tab="yoy"]').forEach(el => { el.style.display = 'none'; });
     const opt = document.querySelector('#mobile-nav option[value="yoy"]');
     if (opt) opt.remove();
+  }
+
+  // Overall Strategy — hide its desktop nav item and mobile option when disabled.
+  if (!STRATEGY_ENABLED) {
+    document.querySelectorAll('.menu-item[data-tab="strategy"]').forEach(el => { el.style.display = 'none'; });
+    const sOpt = document.querySelector('#mobile-nav option[value="strategy"]');
+    if (sOpt) sOpt.remove();
   }
 }
 
