@@ -4,7 +4,13 @@
 // they are gated together with the JS-rendered charts via the placeholder.
 
 function renderFinancial(year) {
-  const d = DATA[year] || {};
+  // The 990 analysis always reflects the most recent year with filed financials
+  // (the foundation's own 990-PF), independent of the selected grant year — so
+  // it stays available even when a grant-year view is hidden.
+  const finYear = Object.keys(DATA).map(Number)
+    .filter(y => DATA[y] && (DATA[y].portfolio || []).length)
+    .sort((a, b) => b - a)[0];
+  const d = (finYear && DATA[finYear]) || {};
   const portfolio = d.portfolio || [];
   const hasData = setTabData('financial', portfolio.length > 0,
     'The 2026 Form 990-PF has not been filed yet (foundation 990s are public ~12–18 months after year-end). Once available, the financial analysis will be pulled in here.');

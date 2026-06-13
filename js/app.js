@@ -1,6 +1,18 @@
 // Application orchestration: year switching, page metadata, tab switching, boot.
 
-let currentYear = 2026;
+// ─────────────────────────────────────────────────────────────
+// ENABLED YEARS
+// Controls which years appear in the UI. The 2025 grant-year view and the
+// Year-over-Year tab are hidden pending re-verification of the 2025 grant data.
+// To restore them, add 2025 back to this list (no other changes needed):
+//     const YEARS_ENABLED = [2025, 2026];
+// (2025 data files stay loaded; the 990 Financial Analysis tab is unaffected —
+//  it always shows the most recent filed financials regardless of this setting.)
+// ─────────────────────────────────────────────────────────────
+const YEARS_ENABLED = [2026];
+const YOY_ENABLED = YEARS_ENABLED.length >= 2;
+
+let currentYear = YEARS_ENABLED[YEARS_ENABLED.length - 1];
 
 // ─────────────────────────────────────────────────────────────
 // PAGE METADATA (title, badge, footer, RMD outlook / target bar)
@@ -94,7 +106,7 @@ function setYear(year) {
   renderFinancial(year);
   // Year-over-year is a fixed cross-year comparison (not tied to the selected
   // year), but re-rendering on each switch is cheap and keeps it in sync.
-  if (typeof renderYoY === 'function') renderYoY();
+  if (YOY_ENABLED && typeof renderYoY === 'function') renderYoY();
   // Overall Strategy is a 2026-focused analyst synthesis; render once available.
   if (typeof renderStrategy === 'function') renderStrategy();
 }
@@ -167,6 +179,28 @@ function openNewsletters() {
 }
 
 // ─────────────────────────────────────────────────────────────
+// YEAR / TAB VISIBILITY  (driven by YEARS_ENABLED)
+// ─────────────────────────────────────────────────────────────
+function applyYearVisibility() {
+  // Hide year-toggle buttons for disabled years; hide the toggle entirely
+  // when only one year is available.
+  document.querySelectorAll('.year-toggle-btn').forEach(b => {
+    b.style.display = YEARS_ENABLED.includes(+b.dataset.year) ? '' : 'none';
+  });
+  const toggle = document.querySelector('.year-toggle');
+  if (toggle) toggle.style.display = YEARS_ENABLED.length > 1 ? '' : 'none';
+
+  // Year-over-Year needs two enabled years — hide its desktop nav item,
+  // mobile option, and section when unavailable.
+  if (!YOY_ENABLED) {
+    document.querySelectorAll('.menu-item[data-tab="yoy"]').forEach(el => { el.style.display = 'none'; });
+    const opt = document.querySelector('#mobile-nav option[value="yoy"]');
+    if (opt) opt.remove();
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
 // BOOT
 // ─────────────────────────────────────────────────────────────
+applyYearVisibility();
 setYear(currentYear);

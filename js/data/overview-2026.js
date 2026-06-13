@@ -14,8 +14,8 @@ DATA[2026].insightCards = [
 DATA[2026].insights = [
   { title:'First Cycle of a $15M Year',
     body:'The June 2026 cycle commits <strong>$8.55M across 90 organizations</strong> — about 57% of the Foundation\'s <strong>$15M</strong> distribution target. Additional cycles are expected later in the year to close the remaining ~$6.45M.' },
-  { title:'A Capital-Heavy Cycle',
-    body:'Capital commitments dominate at <strong>~$5.23M (61% of the cycle)</strong>, led by the Witte Museum ($1.5M, part of a $3M pledge), Haven for Hope\'s 15th Anniversary Campaign Phase III ($1.5M), the Texas A&amp;M-San Antonio First-Gen Scholarship endowment ($1M), and St. Mary\'s new arena scoreboards ($600K).' },
+  { title:'A Capital-Heavy Cycle — Largely in Service of Education',
+    body:'Capital commitments dominate at <strong>~$5.23M (61% of the cycle)</strong> — but "capital" here is a funding <em>type</em>, not a focus area, and most of it advances <strong>education</strong>. The two largest capital items are education investments: the <strong>Witte Museum</strong> ($1.5M, part of a $3M pledge) is a museum/education program, and the <strong>Texas A&amp;M-San Antonio First-Gen Scholarship endowment</strong> ($1M) funds scholarships. The clearest non-education capital gifts are Haven for Hope\'s 15th Anniversary Campaign Phase III ($1.5M) and St. Mary\'s new arena scoreboards ($600K).' },
   { title:'Education Leads at 50%',
     body:'Education is the largest focus area at <strong>~$4.29M</strong>, elevated by major higher-ed and museum commitments. Texas A&amp;M, UTSA (3 grants, $598K), St. Mary\'s, and the Witte together account for the bulk.' },
   { title:'Haven for Hope as Strategic Platform',

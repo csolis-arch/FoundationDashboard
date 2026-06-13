@@ -64,7 +64,10 @@ function renderOverview(year) {
   // signed delta — the current year may be mid-cycle, which would mislead).
   const prev = DATA[year - 1];
   const pg = (prev && prev.grants) || [];
-  const hasPrev = pg.length > 0;
+  // Only show the prior-year comparison when that year is enabled in the UI
+  // (2025 is hidden pending re-verification — see YEARS_ENABLED in app.js).
+  const prevEnabled = (typeof YEARS_ENABLED === 'undefined') || YEARS_ENABLED.includes(year - 1);
+  const hasPrev = pg.length > 0 && prevEnabled;
   const pTot = pg.reduce((s, g) => s + g.amt, 0);
   const pOrg = new Set(pg.map(g => g.org)).size;
   const pCats = new Set(pg.map(g => g.cat)).size;
