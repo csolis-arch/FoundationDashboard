@@ -92,6 +92,9 @@ function setYear(year) {
   renderWaterfall(year);
   renderDependency(year);
   renderFinancial(year);
+  // Year-over-year is a fixed cross-year comparison (not tied to the selected
+  // year), but re-rendering on each switch is cheap and keeps it in sync.
+  if (typeof renderYoY === 'function') renderYoY();
 }
 
 // ─────────────────────────────────────────────────────────────

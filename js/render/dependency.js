@@ -56,6 +56,31 @@ function _depStat(label, val, cls) {
     label + '</div><div class="dep-stat-val">' + val + '</div></div>';
 }
 
+// Build a compact multi-year revenue/expense trend from the 990 history array.
+function _depTrend(history) {
+  if (!Array.isArray(history) || history.length < 2) return '';
+  const maxV = Math.max(1, ...history.map(h =>
+    Math.max(h.totalRevenue || 0, h.totalExpenses || 0)));
+  const rows = history.map(h => {
+    const rev = h.totalRevenue || 0, exp = h.totalExpenses || 0;
+    return `<div class="dep-trend-row">
+      <div class="dep-trend-yr">FY${h.fiscalYear}</div>
+      <div class="dep-trend-bars">
+        <div class="dep-trend-bar"><div class="dep-trend-fill rev" style="width:${(rev / maxV * 100).toFixed(1)}%"></div><span class="dep-trend-bar-lbl">${rev ? fmt(rev) : '—'}</span></div>
+        <div class="dep-trend-bar"><div class="dep-trend-fill exp" style="width:${(exp / maxV * 100).toFixed(1)}%"></div><span class="dep-trend-bar-lbl">${exp ? fmt(exp) : '—'}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+  return `<div class="dep-trend">
+    <div class="dep-trend-title">${history.length}-Year Trend (per 990 filings)</div>
+    ${rows}
+    <div class="dep-trend-legend">
+      <span><span class="dep-trend-swatch" style="background:rgba(91,141,238,0.6)"></span>Total revenue</span>
+      <span><span class="dep-trend-swatch" style="background:rgba(201,168,76,0.6)"></span>Total expenses</span>
+    </div>
+  </div>`;
+}
+
 function _depDetailInner(d, org, ourTotal) {
   if (d && d.error && !d.matched) return '<div class="dep-detail-err">990 lookup error: ' + d.error + '</div>';
   if (!d || !d.matched) return '<div class="dep-detail-err">No reliable IRS / 990 match found for &ldquo;' + org + '&rdquo;. The organization may file under a different legal name.</div>';
@@ -69,7 +94,10 @@ function _depDetailInner(d, org, ourTotal) {
     ? irs.subsection + (irs.rulingYear ? ' · IRS ruling ' + irs.rulingYear : '')
     : 'Not reported'));
   if (fin) {
-    items.push(_depStat('Latest 990', 'FY' + fin.fiscalYear));
+    const fyVal = fin.pdfUrl
+      ? '<a class="dep-detail-link" href="' + fin.pdfUrl + '" target="_blank" rel="noopener">FY' + fin.fiscalYear + ' ↗</a>'
+      : 'FY' + fin.fiscalYear;
+    items.push(_depStat('Latest 990', fyVal));
     if (fin.totalExpenses) items.push(_depStat('Total expenses', fmtFull(fin.totalExpenses)));
     if (fin.totalRevenue) items.push(_depStat('Total revenue', fmtFull(fin.totalRevenue)));
     if (fin.totalAssets) items.push(_depStat('Net assets (EOY)', fmtFull(fin.totalAssets)));
@@ -86,12 +114,17 @@ function _depDetailInner(d, org, ourTotal) {
     ? '<span class="dep-match-flag warn">⚠ Possible match — verify</span>'
     : '<span class="dep-match-flag ok">✓ Matched</span>';
 
+  const verifyLink = d.profileUrl
+    ? ' <a class="dep-detail-link" href="' + d.profileUrl + '" target="_blank" rel="noopener">Verify on ProPublica ↗</a>'
+    : '';
+
   return `<div class="dep-detail-head">
       <div><span class="dep-detail-name">${m.name}</span> <span class="dep-detail-ein">EIN ${einFmt}${m.city ? (' · ' + m.city + ', ' + m.state) : ''}</span></div>
       ${flag}
     </div>
     <div class="dep-detail-grid">${items.join('')}</div>
-    <div class="dep-detail-src">Source: ${d.source}. Figures reflect the most recent electronically filed Form 990 — confirm the matched entity above before relying on these numbers.</div>`;
+    ${_depTrend(d.history)}
+    <div class="dep-detail-src">Source: ${d.source}. Figures reflect the most recent electronically filed Form 990 — confirm the matched entity above before relying on these numbers.${verifyLink}</div>`;
 }
 
 function depLookup(btn) {

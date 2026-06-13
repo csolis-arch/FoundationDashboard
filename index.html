@@ -118,6 +118,7 @@
   <div class="tab-menu" id="menu-analysis">
     <button class="tab-menu-btn" onclick="toggleMenu('analysis',event)">📈 Analysis <span class="menu-caret">▾</span></button>
     <div class="tab-menu-panel">
+      <div class="menu-item" data-tab="yoy" onclick="switchTab('yoy',this)">🔀 Year over Year</div>
       <div class="menu-item" data-tab="funding" onclick="switchTab('funding',this)">💡 Type of Funding</div>
       <div class="menu-item" data-tab="waterfall" onclick="switchTab('waterfall',this)">📅 Pledge Waterfall</div>
       <div class="menu-item" data-tab="dependency" onclick="switchTab('dependency',this)">⚠️ Org Dependency Risk</div>
@@ -142,9 +143,16 @@
     <option value="impact">🌟 Impact</option>
   </optgroup>
   <optgroup label="Analysis">
+    <option value="yoy">🔀 Year over Year</option>
     <option value="funding">💡 Type of Funding</option>
     <option value="waterfall">📅 Pledge Waterfall</option>
     <option value="dependency">⚠️ Org Dependency Risk</option>
+    <option value="financial">📈 990 Financial Analysis</option>
+    <option value="rmd">📐 RMD Projection</option>
+  </optgroup>
+  <optgroup label="Tools">
+    <option value="heatmap">🗺️ Grant Map</option>
+    <option value="allocator">🎯 Grant Allocator</option>
   </optgroup>
 </select>
 
@@ -309,6 +317,46 @@
 
 </div>
 <div id="registry-placeholder" style="display:none"></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB — YEAR OVER YEAR
+══════════════════════════════════════════════════ -->
+<div class="tab-section" id="section-yoy">
+<div class="main">
+<div id="yoy-content">
+
+  <div class="callout cblue" style="margin-bottom:20px">
+    <div class="callout-icon">🔵</div>
+    <div class="callout-text" id="yoy-disclaimer"><strong>How to read this:</strong> 2025 reflects a <em>full year</em> of grantmaking, while 2026 to date includes only the <strong>June cycle</strong> ($8.55M of a $15M target). A second cycle is expected later in the year, so the year-over-year declines below are expected to narrow once the November cycle is committed. Deltas compare committed dollars to date, not final-year totals.</div>
+  </div>
+
+  <div class="kpi-row" id="yoy-kpi-row" style="margin-bottom:24px"></div>
+
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-title">Giving by Focus Area — <span id="yoy-cat-years">2025 vs 2026</span></div>
+    <div id="yoy-category"></div>
+  </div>
+
+  <div class="grid2" style="margin-bottom:24px">
+    <div class="card">
+      <div class="card-title">New Grantees <span style="font-weight:400;color:var(--text-dim);font-size:12px">— funded in <span class="yoy-yr-late">2026</span>, not <span class="yoy-yr-early">2025</span></span></div>
+      <div id="yoy-new"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Lapsed Grantees <span style="font-weight:400;color:var(--text-dim);font-size:12px">— funded in <span class="yoy-yr-early">2025</span>, not yet in <span class="yoy-yr-late">2026</span></span></div>
+      <div id="yoy-lapsed"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-title">Top Recipient Movement</div>
+    <table class="yoy-table" id="yoy-toporgs"></table>
+  </div>
+
+</div>
+<div id="yoy-placeholder" style="display:none"></div>
 </div>
 </div>
 
@@ -660,6 +708,7 @@
 <script src="js/data/dependency-2026.js"></script>
 <!-- Render layer (one module per tab) -->
 <script src="js/render/util.js"></script>
+<script src="js/render/yoy.js"></script>
 <script src="js/render/overview.js"></script>
 <script src="js/render/registry.js"></script>
 <script src="js/render/impact.js"></script>

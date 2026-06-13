@@ -86,6 +86,15 @@ module.exports = async (req, res) => {
       .sort((a, b) => (b.tax_prd_yr || 0) - (a.tax_prd_yr || 0));
     const f = filings[0] || null;
 
+    // Multi-year trend: up to the 5 most recent filed years, oldest → newest,
+    // so the UI can chart the grantee's revenue/expense trajectory over time.
+    const history = filings.slice(0, 5).map(x => ({
+      fiscalYear: x.tax_prd_yr,
+      totalRevenue: x.totrevenue,
+      totalExpenses: x.totfuncexpns,
+      totalAssets: x.totassetsend,
+    })).reverse();
+
     // An active grantee should have a recent 990 on file. No filing, or a stale
     // one (>3 yrs old), often means the search hit a defunct shell or the wrong
     // subsidiary rather than the operating entity — flag it for human review.
@@ -97,6 +106,10 @@ module.exports = async (req, res) => {
     const subLabel = org.subsection_code === 3
       ? '501(c)(3)'
       : (org.subsection_code ? '501(c)(' + org.subsection_code + ')' : null);
+
+    // Deep link to the matched org's ProPublica profile so a reviewer can
+    // open the underlying filings and confirm we matched the right entity.
+    const profileUrl = 'https://projects.propublica.org/nonprofits/organizations/' + ein;
 
     res.status(200).json({
       query: q,
@@ -111,7 +124,11 @@ module.exports = async (req, res) => {
         totalRevenue: f.totrevenue,
         totalExpenses: f.totfuncexpns,
         totalAssets: f.totassetsend,
+        // Direct link to the filing PDF on ProPublica, when one is published.
+        pdfUrl: f.pdf_url || null,
       } : null,
+      history,
+      profileUrl,
       source: 'ProPublica Nonprofit Explorer (IRS Form 990)',
     });
   } catch (e) {
