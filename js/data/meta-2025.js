@@ -19,7 +19,7 @@ DATA[2025].meta = {
   footerStats: [
     { val: '~$265M',  lbl: 'Est. Current FMV' },
     { val: '~$984K',  lbl: 'Est. 2025 Gap',        color: 'var(--red)' },
-    { val: '~$12.6M', lbl: '2026 Min. Required',    color: 'var(--blue)' },
+    { val: '$15M', lbl: '2026 Distribution Target',    color: 'var(--blue)' },
     { val: '$1.96M',  lbl: '2026 Pledges Locked',   color: 'var(--orange)' },
   ],
 };

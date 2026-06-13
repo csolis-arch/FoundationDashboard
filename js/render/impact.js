@@ -33,7 +33,7 @@ function renderImpact(year) {
       <div onclick="toggleTable('${tableId}')" style="background:var(--surface);border:1px solid var(--border);border-radius:8px 8px 0 0;border-left:4px solid ${color};padding:14px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
         <div>
           <span style="font-weight:600;color:${color};font-size:13px">${cat}</span>
-          <span style="margin-left:12px;font-size:11px;color:var(--text-dim)">${orgs.length} grants · $${(totalAmt/1e6).toFixed(2)}M · ${totalReach.toLocaleString()} people/units reached</span>
+          <span style="margin-left:12px;font-size:11px;color:var(--text-dim)">${orgs.length} grants · $${(totalAmt/1e6).toFixed(2)}M · ${totalReach.toLocaleString()} people/units reached per year</span>
         </div>
         <span id="arr-${tableId}" style="color:var(--text-dim);font-size:14px">▼</span>
       </div>

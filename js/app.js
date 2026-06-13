@@ -95,6 +95,8 @@ function setYear(year) {
   // Year-over-year is a fixed cross-year comparison (not tied to the selected
   // year), but re-rendering on each switch is cheap and keeps it in sync.
   if (typeof renderYoY === 'function') renderYoY();
+  // Overall Strategy is a 2026-focused analyst synthesis; render once available.
+  if (typeof renderStrategy === 'function') renderStrategy();
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -119,20 +121,6 @@ function switchTab(id, el) {
   if (sel && sel.value !== id) sel.value = id;
   closeMenus();
   window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  // Lazy-load iframes on first click
-  if (id === 'heatmap') {
-    const fr = document.getElementById('heatmap-frame');
-    if (!fr.src) fr.src = 'tools/grant-map.html';
-  }
-  if (id === 'rmd') {
-    const fr = document.getElementById('rmd-frame');
-    if (!fr.src) fr.src = 'tools/rmd-projection.html';
-  }
-  if (id === 'allocator') {
-    const fr = document.getElementById('allocator-frame');
-    if (!fr.src) fr.src = 'tools/grant-allocator.html';
-  }
 
   // Re-trigger fade-ins on overview tab
   if (id === 'overview') {

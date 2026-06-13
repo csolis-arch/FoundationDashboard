@@ -48,36 +48,36 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════
-     RMD STATUS BAR — 2026 OUTLOOK
+     2026 DISTRIBUTION OUTLOOK (against the $15M target)
 ══════════════════════════════════════════════════ -->
 <div class="rmd-bar" id="rmd-bar">
   <div class="rmd-inner" style="padding:16px 0;gap:24px;flex-wrap:nowrap;align-items:center">
 
     <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;flex-shrink:0">
-      2026 RMD<br>Outlook
+      2026<br>Outlook
     </div>
 
-    <!-- Big stacked bar -->
+    <!-- Big stacked bar (against the $15M distribution target) -->
     <div style="flex:1;min-width:0">
       <div style="position:relative;height:48px;border-radius:8px;overflow:hidden;background:var(--surface2)">
-        <!-- Pledges: 15.6% -->
-        <div style="position:absolute;top:0;left:0;height:100%;width:15.6%;background:#c0453a"></div>
-        <!-- Admin: 13.9% -->
-        <div style="position:absolute;top:0;left:15.6%;height:100%;width:13.9%;background:#c0703a"></div>
-        <!-- Discretionary: 70.5% -->
-        <div style="position:absolute;top:0;left:29.5%;height:100%;width:70.5%;background:linear-gradient(90deg,#3a6fd8,#3aaa88)"></div>
+        <!-- Pledges: 13.1% of $15M -->
+        <div style="position:absolute;top:0;left:0;height:100%;width:13.1%;background:#c0453a"></div>
+        <!-- Admin: 11.7% of $15M -->
+        <div style="position:absolute;top:0;left:13.1%;height:100%;width:11.7%;background:#c0703a"></div>
+        <!-- Discretionary: 75.2% of $15M -->
+        <div style="position:absolute;top:0;left:24.8%;height:100%;width:75.2%;background:linear-gradient(90deg,#3a6fd8,#3aaa88)"></div>
         <!-- Segment labels -->
-        <div style="position:absolute;top:0;left:0;width:15.6%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 8px;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;width:13.1%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 8px;overflow:hidden">
           <div style="font-size:9px;color:rgba(255,255,255,0.9);font-weight:600;white-space:nowrap">Pledges</div>
           <div style="font-size:9px;color:rgba(255,255,255,0.65);font-family:'DM Mono',monospace;white-space:nowrap">$1.96M</div>
         </div>
-        <div style="position:absolute;top:0;left:15.6%;width:13.9%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 8px;overflow:hidden">
+        <div style="position:absolute;top:0;left:13.1%;width:11.7%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 8px;overflow:hidden">
           <div style="font-size:9px;color:rgba(255,255,255,0.9);font-weight:600;white-space:nowrap">Admin</div>
           <div style="font-size:9px;color:rgba(255,255,255,0.65);font-family:'DM Mono',monospace;white-space:nowrap">$1.75M</div>
         </div>
-        <div style="position:absolute;top:0;left:29.5%;width:70.5%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 12px;overflow:hidden">
-          <div style="font-size:12px;color:#fff;font-weight:600;white-space:nowrap">~$8.87M New Discretionary Grants</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.6);font-family:'DM Mono',monospace;white-space:nowrap">70.5% of $12.6M required</div>
+        <div style="position:absolute;top:0;left:24.8%;width:75.2%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 12px;overflow:hidden">
+          <div style="font-size:12px;color:#fff;font-weight:600;white-space:nowrap">~$11.29M New Discretionary Grants</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.6);font-family:'DM Mono',monospace;white-space:nowrap">75% of the $15M target</div>
         </div>
       </div>
     </div>
@@ -91,8 +91,8 @@
         <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">Est. FMV</div>
       </div>
       <div style="text-align:center">
-        <div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--blue);line-height:1">$12.6M</div>
-        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">2026 Required</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--blue);line-height:1">$15M</div>
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">2026 Target</div>
       </div>
     </div>
 
@@ -122,16 +122,14 @@
       <div class="menu-item" data-tab="funding" onclick="switchTab('funding',this)">💡 Type of Funding</div>
       <div class="menu-item" data-tab="waterfall" onclick="switchTab('waterfall',this)">📅 Pledge Waterfall</div>
       <div class="menu-item" data-tab="dependency" onclick="switchTab('dependency',this)">⚠️ Org Dependency Risk</div>
-      <div class="menu-item" data-tab="financial" onclick="switchTab('financial',this)">📈 990 Financial Analysis</div>
-      <div class="menu-item" data-tab="rmd" onclick="switchTab('rmd',this)">📐 RMD Projection</div>
     </div>
   </div>
-  <!-- Interactive utilities -->
+  <!-- Tools -->
   <div class="tab-menu" id="menu-tools">
     <button class="tab-menu-btn" onclick="toggleMenu('tools',event)">🛠️ Tools <span class="menu-caret">▾</span></button>
     <div class="tab-menu-panel">
-      <div class="menu-item" data-tab="heatmap" onclick="switchTab('heatmap',this)">🗺️ Grant Map</div>
-      <div class="menu-item" data-tab="allocator" onclick="switchTab('allocator',this)">🎯 Grant Allocator</div>
+      <div class="menu-item" data-tab="strategy" onclick="switchTab('strategy',this)">🧭 Overall Strategy</div>
+      <div class="menu-item" data-tab="financial" onclick="switchTab('financial',this)">📈 990 Financial Analysis</div>
     </div>
   </div>
 </div>
@@ -147,12 +145,10 @@
     <option value="funding">💡 Type of Funding</option>
     <option value="waterfall">📅 Pledge Waterfall</option>
     <option value="dependency">⚠️ Org Dependency Risk</option>
-    <option value="financial">📈 990 Financial Analysis</option>
-    <option value="rmd">📐 RMD Projection</option>
   </optgroup>
   <optgroup label="Tools">
-    <option value="heatmap">🗺️ Grant Map</option>
-    <option value="allocator">🎯 Grant Allocator</option>
+    <option value="strategy">🧭 Overall Strategy</option>
+    <option value="financial">📈 990 Financial Analysis</option>
   </optgroup>
 </select>
 
@@ -206,9 +202,9 @@
     </div>
   </div>
 
-  <!-- RMD Compliance & 2026 Outlook -->
+  <!-- 2025 Distribution Compliance & 2026 Outlook -->
   <div class="card grid-full fade-in" id="overview-outlook" style="margin-bottom:28px">
-    <div class="card-title">RMD Compliance &amp; 2026 Grantmaking Outlook</div>
+    <div class="card-title">2025 Distribution Compliance &amp; 2026 Outlook</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
 
       <!-- 2025 bar -->
@@ -241,26 +237,26 @@
       <!-- 2026 bar -->
       <div>
         <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-          <div style="font-size:12px;font-weight:600;color:var(--text)">2026 Projected Capacity</div>
-          <div style="font-size:10px;color:var(--text-dim);font-family:'DM Mono',monospace">Required: ~$12.6M</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text)">2026 Distribution Plan</div>
+          <div style="font-size:10px;color:var(--text-dim);font-family:'DM Mono',monospace">Target: $15M</div>
         </div>
-        <!-- stacked bar showing how 12.6M gets filled -->
+        <!-- stacked bar showing how the $15M target gets filled -->
         <div style="height:36px;background:var(--surface2);border-radius:6px;overflow:hidden;position:relative;border:1px dashed rgba(91,141,238,0.35)">
-          <!-- pledges locked (1.96M / 12.6M = 15.6%) -->
-          <div style="position:absolute;top:0;left:0;height:100%;width:15.6%;background:rgba(224,92,92,0.6)" title="Locked pledges $1.96M"></div>
-          <!-- admin (1.75M / 12.6M = 13.9%) -->
-          <div style="position:absolute;top:0;left:15.6%;height:100%;width:13.9%;background:rgba(224,122,60,0.5)" title="Operations $1.75M"></div>
-          <!-- remaining discretionary (70.5%) -->
-          <div style="position:absolute;top:0;left:29.5%;height:100%;width:70.5%;background:rgba(91,141,238,0.4);border-radius:0 5px 5px 0"></div>
+          <!-- pledges locked (1.96M / 15M = 13.1%) -->
+          <div style="position:absolute;top:0;left:0;height:100%;width:13.1%;background:rgba(224,92,92,0.6)" title="Locked pledges $1.96M"></div>
+          <!-- admin (1.75M / 15M = 11.7%) -->
+          <div style="position:absolute;top:0;left:13.1%;height:100%;width:11.7%;background:rgba(224,122,60,0.5)" title="Operations $1.75M"></div>
+          <!-- remaining discretionary (75.2%) -->
+          <div style="position:absolute;top:0;left:24.8%;height:100%;width:75.2%;background:rgba(91,141,238,0.4);border-radius:0 5px 5px 0"></div>
           <!-- labels -->
           <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center">
-            <span style="font-size:11px;font-family:'DM Mono',monospace;color:#fff;font-weight:500">~$8.87M new discretionary</span>
+            <span style="font-size:11px;font-family:'DM Mono',monospace;color:#fff;font-weight:500">~$11.29M new discretionary</span>
           </div>
         </div>
         <div style="display:flex;gap:14px;margin-top:6px;flex-wrap:wrap">
           <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-dim)"><div style="width:8px;height:8px;border-radius:2px;background:rgba(224,92,92,0.6)"></div>Pledges $1.96M</div>
           <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-dim)"><div style="width:8px;height:8px;border-radius:2px;background:rgba(224,122,60,0.5)"></div>Admin $1.75M</div>
-          <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-dim)"><div style="width:8px;height:8px;border-radius:2px;background:rgba(91,141,238,0.4)"></div>New grants ~$8.87M</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-dim)"><div style="width:8px;height:8px;border-radius:2px;background:rgba(91,141,238,0.4)"></div>New grants ~$11.29M</div>
         </div>
       </div>
 
@@ -611,8 +607,8 @@
       <div id="capacity-rows"></div>
       <div style="margin-top:16px;padding:14px 16px;background:var(--gold-faint);border:1px solid rgba(201,168,76,0.2);border-radius:8px">
         <div style="font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">Est. New Discretionary Giving Available</div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold-light)">~$8.8M</div>
-        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">After pledges and operations — before any new commitments</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold-light)">~$11.3M</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">Against the $15M target, after pledges and operations — before any new commitments</div>
       </div>
     </div>
 
@@ -644,7 +640,7 @@
 <div id="impact-content">
 
   <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:12px;color:var(--text-muted);line-height:1.7;border-left:3px solid var(--gold)">
-    <strong style="color:var(--gold-light)">How to read this:</strong> Every <span id="impact-year">2025</span> grant is included. "People reached" reflects the total capacity of each funded program — not people attributable solely to GFF. One person may appear across multiple programs. Figures are based on published grantee data, sector benchmarks, and program capacity estimates. <em>This is reach, not attribution.</em>
+    <strong style="color:var(--gold-light)">How to read this:</strong> Every <span id="impact-year">2025</span> grant is included. <strong style="color:var(--text)">Reach figures are annual</strong> — they reflect the number of people (or units) each funded program serves in a typical <strong>year</strong>, i.e. the program's overall capacity. They are <em>not</em> one-time totals and are <em>not</em> scaled to the size of our grant. Reach also reflects the total capacity of each program — not people attributable solely to GFF — and one person may appear across multiple programs. Figures are based on published grantee data, sector benchmarks, and program-capacity estimates. <em>This is annual reach, not attribution.</em>
   </div>
 
   <div id="impact-heroes" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px"></div>
@@ -660,24 +656,12 @@
 
 
 <!-- ══════════════════════════════════════════════════
-     TAB 7 — GRANT MAP
+     TAB — OVERALL STRATEGY (analyst synthesis)
 ══════════════════════════════════════════════════ -->
-<div class="tab-section" id="section-heatmap">
-  <iframe id="heatmap-frame" style="width:100%;height:calc(100vh - 100px);border:none;display:block" allowfullscreen></iframe>
+<div class="tab-section" id="section-strategy">
+<div class="main">
+<div id="strategy-content"></div>
 </div>
-
-<!-- ══════════════════════════════════════════════════
-     TAB 8 — RMD PROJECTION
-══════════════════════════════════════════════════ -->
-<div class="tab-section" id="section-rmd">
-  <iframe id="rmd-frame" style="width:100%;height:calc(100vh - 100px);border:none;display:block"></iframe>
-</div>
-
-<!-- ══════════════════════════════════════════════════
-     TAB 9 — GRANT ALLOCATOR
-══════════════════════════════════════════════════ -->
-<div class="tab-section" id="section-allocator">
-  <iframe id="allocator-frame" style="width:100%;height:calc(100vh - 100px);border:none;display:block"></iframe>
 </div>
 
 <!-- ══════════════════════════════════════════════════
@@ -716,6 +700,7 @@
 <script src="js/render/waterfall.js"></script>
 <script src="js/render/dependency.js"></script>
 <script src="js/render/financial.js"></script>
+<script src="js/render/strategy.js"></script>
 <!-- Application orchestration -->
 <script src="js/app.js"></script>
 <!-- ══════════════════════════════════════════════════

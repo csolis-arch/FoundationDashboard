@@ -20,8 +20,8 @@ DATA[2026].meta = {
   compliance: {
     status: 'ontrack',
     label: 'On Track',
-    headline: '$15M target set above the ~$12.6M required minimum',
-    detail: 'The 2026 distribution target ($15M) is set comfortably above the estimated ~$12.6M minimum required payout. $8.55M is committed in the June cycle; the November cycle is expected to close the remainder.',
+    headline: '$15M distribution target set for 2026',
+    detail: 'The Foundation is planning a $15M distribution for 2026, well above its 5% minimum payout requirement. $8.55M is committed in the June cycle; the November cycle is expected to close the remainder.',
   },
   // Sticky-footer stats (committed % computed at render against target)
   footerStats: [

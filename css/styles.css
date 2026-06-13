@@ -623,9 +623,6 @@
     /* Registry controls: full-width export button */
     .reg-export { width: 100%; text-align: center; }
 
-    /* Embedded desktop-only tools hidden on phones */
-    #section-heatmap, #section-rmd, #section-allocator { display: none !important; }
-
     /* 990 detail drawer: stack as a normal block inside the card list */
     .dep-table .dep-detail-row td, .reg-table .dep-detail-row td { display: block; padding: 0 !important; }
     .dep-table .dep-detail-row td:before, .reg-table .dep-detail-row td:before { content: none !important; }

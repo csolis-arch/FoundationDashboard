@@ -12,7 +12,7 @@ DATA[2026].impactFootnote = `<strong style="color:var(--text-muted)">Community E
 DATA[2026].impact = [
   // ── HOMELESSNESS & BASIC NEEDS ──────────────────────────────────────────
   {org:'Haven for Hope',                         amt:2000000, cat:'Homelessness & Basic Needs', reach:9800, unit:'people', detail:'Operations + 15th Anniversary Capital Campaign (Phase III). Campus serves ~9,800 unique individuals/yr (~1,700/day) across 75+ on-campus partner services.'},
-  {org:'Faith Kitchen',                          amt:75000,   cat:'Homelessness & Basic Needs', reach:3000, unit:'people', detail:'Food ministry serving ~3,000 individuals annually; 300+ meals/day.'},
+  {org:'Faith Kitchen',                          amt:75000,   cat:'Homelessness & Basic Needs', reach:3000, unit:'people', detail:'Haven for Hope partner. Food ministry serving ~3,000 individuals annually; 300+ meals/day.'},
   {org:'Guardian House',                         amt:30000,   cat:'Homelessness & Basic Needs', reach:200,  unit:'families', detail:'Supervised visitation and safe exchange for families navigating custody or domestic violence.'},
   {org:'Hill Country Daily Bread Ministries',    amt:25000,   cat:'Homelessness & Basic Needs', reach:250,  unit:'people', detail:'Hunger relief and support for rural Hill Country families.'},
   {org:'Texas Ramp Project',                     amt:25000,   cat:'Homelessness & Basic Needs', reach:120,  unit:'ramps', detail:'Wheelchair ramps built for low-income elderly and disabled Bexar County residents.'},

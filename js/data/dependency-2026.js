@@ -9,7 +9,6 @@ DATA[2026] = DATA[2026] || {};
 DATA[2026].depData = [
   {org:"San Antonio Christian Dental Clinic",grants:2,total:220000,risk:"high",notes:"Operations + prosthetics for a single-site clinic on the Haven campus; Foundation likely top funder",estimate:"Est. 50%+ of budget"},
   {org:"Faith Kitchen",grants:1,total:75000,risk:"high",notes:"Small food ministry; a $75K grant is core operating funding",estimate:"Est. 30–60% of budget"},
-  {org:"AugustHeart",grants:1,total:150000,risk:"high",notes:"Single-cause youth heart-screening nonprofit; $150K is a large share",estimate:"Est. 25–45% of budget"},
   {org:"UT Health SA – Dr. Usatine (Haven Clinic)",grants:1,total:125000,risk:"medium",notes:"Program-level dependency: funds a specific Haven dermatology clinic; institution itself is large",estimate:"Program reliant on grant"},
   {org:"Animal Defense League of Texas",grants:2,total:120000,risk:"medium",notes:"Capital campaign + operations; mid-size org with diversified support",estimate:"Est. 10–20% of budget"},
   {org:"Morgan's",grants:1,total:100000,risk:"medium",notes:"Camp capital/safety improvements; well-funded inclusion org, one-time capital",estimate:"Est. 5–15% of budget"},
@@ -29,15 +28,15 @@ DATA[2026].depData = [
 ];
 
 DATA[2026].depKpis = [
-  {cls:'kred',   val:'3',       label:'High Dependency Orgs'},
+  {cls:'kred',   val:'2',       label:'High Dependency Orgs'},
   {cls:'korange',val:'12',      label:'Medium Risk / Watch List'},
-  {cls:'kgold',  val:'~$870K',  label:'In High/Medium-Risk Orgs'},
+  {cls:'kgold',  val:'~$720K',  label:'In High/Medium-Risk Orgs'},
   {cls:'kblue',  val:'6',       label:'Orgs Receiving 2+ Grants (2026)'},
 ];
 
 DATA[2026].depInsights = [
   {title:'SA Christian Dental Clinic — Single-Site Dependency', body:'$220K (operations + prosthetics) to a clinic operating on the Haven for Hope campus. As a single-site provider, the Foundation is likely its largest funder — request a full budget and Form 990 before renewal.'},
-  {title:'Faith Kitchen & AugustHeart — Small-Org Concentration', body:'Faith Kitchen ($75K) and AugustHeart ($150K) are mission-specific nonprofits where a six-figure grant can represent 25–60% of annual revenue. Excellent mission fit, but monitor for over-reliance and consider capacity-building support.'},
+  {title:'Faith Kitchen — Small-Org Concentration', body:'Faith Kitchen ($75K) is a mission-specific food ministry where a grant of this size can represent 30–60% of annual revenue. Excellent mission fit, but monitor for over-reliance and consider capacity-building support.'},
   {title:'IRS Public Support Test — "Tipping" Watch', body:'Several small grantees (Faith Kitchen, SLEW Cancer Wellness, Empower House, Transformation House, Threads of Love) likely receive a high share of their budget from this Foundation. Under IRC §509(a)(1)/(2), more than 33% of support from a single donor over a 5-year rolling period risks losing public charity status ("tipping"). A Schedule B review is prudent before renewal.'},
 ];
 

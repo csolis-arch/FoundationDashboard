@@ -20,8 +20,8 @@ DATA[2025].complianceData = [
    tip:"Required: $11.69M · Paid: $7.06M · $1.93M undistributed carryforward to 2025"},
   {year:2025, required:14483980, actual:13500000,  status:"warn", label:"~ Est. Gap",   est:true,
    tip:"Required: $14.48M (incl. $1.93M 2024 carryforward) · Paid: ~$13.5M · Est. $984K gap — cure window open until 12/31/2026"},
-  {year:2026, required:12555000, actual:8845000,   status:"proj", label:"Projected",    est:true,
-   tip:"Required: ~$12.6M · Projected discretionary grants: ~$8.8M · Pledges ($1.96M) + admin ($1.75M) fill remainder"},
+  {year:2026, required:15000000, actual:8552869,   status:"proj", label:"Projected",    est:true,
+   tip:"2026 distribution target: $15M · Committed in the June cycle: ~$8.55M · November cycle expected to close the remainder"},
 ];
 
 DATA[2025].treadmill = [
@@ -44,7 +44,7 @@ DATA[2025].expenses = [
 ];
 
 DATA[2025].capacityItems = [
-  {label:"2026 Min. Required Distribution", amt:-12555000, color:"var(--red)"},
+  {label:"2026 Distribution Target", amt:-15000000, color:"var(--red)"},
   {label:"Less: Locked Pledge Obligations", amt:-1958000,  color:"var(--orange)"},
   {label:"Less: Est. Operating Expenses",   amt:-1752000,  color:"var(--text-dim)"},
 ];
@@ -62,7 +62,7 @@ DATA[2025].finInsights = [
   {title:"Payout Shortfall — 2024 Was ~$2M Short", body:"The 990 confirms a $1,928,980 undistributed income balance that had to be distributed in 2025. The 2025 grant surge of ~$13.5M addressed the majority of this shortfall. Any remaining gap is subject to the standard IRS make-up window under Section 4942."},
   {title:"Unrealized Gains Create a Silent Obligation", body:"The $78.4M gap between book and fair market value is real wealth — but it also increases the annual 5% payout floor. The IRS taxes on FMV, not book, meaning every dollar of appreciation in the portfolio adds $0.05 to the annual required distribution."},
   {title:"Investment Return Was 7.7% in 2024 — Below Market", body:"The S&P 500 returned 25% in 2024. The foundation captured roughly 30% of that — reflecting the diversified alternatives portfolio and bond holdings which act as drag during equity bull markets. The alternatives do provide downside protection however."},
-  {title:"The Treadmill Accelerates With Asset Growth", body:"At $265M current FMV and ~$12.9M required in 2026, the foundation needs to grow its annual grantmaking by ~$650K per year just to stay compliant — before funding a single new initiative. This is the structural challenge of a growing endowment."},
+  {title:"A Growing Endowment Raises the Floor", body:"At ~$265M current FMV, the 5% minimum-distribution floor rises automatically each year as assets appreciate. The Foundation's $15M 2026 distribution target sits comfortably above that floor, but the structural point stands: grantmaking must keep growing with the endowment just to stay ahead of the rising minimum."},
   {title:"Management Fees Deserve Review at $300M+", body:"The $1.116M investment management fee represents 0.46% of AUM — reasonable but negotiable. As assets cross $300M, a renegotiation to 0.35% would free up ~$330K annually — enough to fund 6–7 mid-size grants."},
   {title:"Governance is Lean — Capacity May Be a Risk", body:"No employees earn over $50K. The entire foundation is operated by a small staff with family directors compensated at $20K each. As the portfolio approaches $300M and grantmaking complexity increases, governance capacity is worth examining."},
 ];
