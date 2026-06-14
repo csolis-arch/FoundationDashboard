@@ -796,23 +796,8 @@
 .bh-stat-v { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; line-height: 1; }
 .bh-stat-l { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-dim); margin-top: 7px; }
 
-/* ── Decisions & Recommendations card ── */
-.board-decisions .bd-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.55; }
-.bd-list { display: flex; flex-direction: column; gap: 10px; }
-.bd-item { display: flex; align-items: flex-start; gap: 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
-.bd-num { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--bg); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; }
-.bd-body { flex: 1; min-width: 0; }
-.bd-title { font-weight: 600; color: var(--text); font-size: 13.5px; margin-bottom: 3px; }
-.bd-text { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
-.bd-action { flex-shrink: 0; align-self: center; }
-.bd-link { background: transparent; border: 1px solid var(--border); color: var(--gold-light); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: 7px; cursor: pointer; white-space: nowrap; transition: border-color 0.2s, background 0.2s; }
-.bd-link:hover { border-color: var(--gold); background: var(--gold-faint); }
-
 @media (max-width: 720px) {
   .bh-stat { min-width: calc(50% - 7px); }
-  .bd-item { flex-wrap: wrap; }
-  .bd-action { width: 100%; }
-  .bd-link { width: 100%; }
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -831,7 +816,7 @@
   }
   /* Hide interactive chrome */
   #pw-gate, .header-actions, .tabs, .mobile-nav, .tab-menu, .sticky-footer,
-  .ov-detail-link, .ov-status-link, .bd-link, .dep-990-btn, .reg-export,
+  .ov-detail-link, .ov-status-link, .dep-990-btn, .reg-export,
   .reg-controls, .menu-caret, .newsletter-btn { display: none !important; }
   /* Flatten the header into a simple packet masthead */
   .header { position: static !important; background: none !important; box-shadow: none !important; border: none !important; padding-bottom: 8px !important; }
@@ -841,7 +826,6 @@
   .tab-section.active { display: block !important; }
   .fade-in { opacity: 1 !important; transform: none !important; }
   /* Avoid awkward page breaks */
-  .card, .board-hero, .board-decisions, .insight-card, .bd-item, .bh-stat { break-inside: avoid; page-break-inside: avoid; }
+  .card, .board-hero, .insight-card, .bh-stat { break-inside: avoid; page-break-inside: avoid; }
   .bh-headline strong { color: #7d6418 !important; }
-  .bd-num { color: #fff !important; }
 }

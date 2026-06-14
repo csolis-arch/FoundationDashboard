@@ -1,20 +1,13 @@
 // Board-facing additions to the Overview tab:
 //   1) a "Board Summary" hero (the 30-second headline + target-framed stats)
-//   2) a "Decisions & Recommendations" card that consolidates the governance
-//      asks raised across other tabs, each linking to its detail view.
 // Plus printBoardPacket(): a one-click, board-ready print/PDF of the summary.
-//
-// Data-driven: edit DATA[year].decisions to change the board asks. Bodies may
-// use the tokens {remaining} and {target}, replaced with live figures here.
 
 function renderBoard(year) {
   const d = DATA[year] || {};
   const grants = d.grants || [];
   const sum = document.getElementById('board-summary');
-  const dec = document.getElementById('board-decisions');
   if (!grants.length) {
     if (sum) sum.innerHTML = '';
-    if (dec) dec.innerHTML = '';
     return;
   }
 
@@ -56,39 +49,6 @@ function renderBoard(year) {
           ${tiles.map(t => `<div class="bh-stat"><div class="bh-stat-v" style="color:${t.c}">${t.v}</div><div class="bh-stat-l">${t.l}</div></div>`).join('')}
         </div>
       </div>`;
-  }
-
-  // ── Decisions & Recommendations (consolidated asks, linked to detail tabs) ──
-  if (dec) {
-    const items = d.decisions || [];
-    if (!items.length) {
-      dec.innerHTML = '';
-    } else {
-      const fill = s => String(s || '')
-        .replace(/\{remaining\}/g, fmt(remaining))
-        .replace(/\{target\}/g, fmt(target));
-      const action = it => {
-        if (it.tab) return `<button class="bd-link" onclick="switchTabById('${it.tab}')">${it.linkLabel || 'See detail'} &rarr;</button>`;
-        if (it.scroll) return `<button class="bd-link" onclick="window.scrollTo({top:0,behavior:'smooth'})">${it.linkLabel || 'View above'} &uarr;</button>`;
-        return '';
-      };
-      dec.innerHTML = `
-        <div class="card grid-full fade-in board-decisions">
-          <div class="card-title">Decisions &amp; Recommendations for the Board</div>
-          <div class="bd-sub">Governance items raised across this analysis, consolidated here. Full detail lives on each linked tab.</div>
-          <div class="bd-list">
-            ${items.map(it => `
-              <div class="bd-item">
-                <div class="bd-num">${it.n || ''}</div>
-                <div class="bd-body">
-                  <div class="bd-title">${it.title}</div>
-                  <div class="bd-text">${fill(it.body)}</div>
-                </div>
-                <div class="bd-action">${action(it)}</div>
-              </div>`).join('')}
-          </div>
-        </div>`;
-    }
   }
 }
 
