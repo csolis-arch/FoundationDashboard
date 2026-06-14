@@ -29,3 +29,17 @@ DATA[2026].insights = [
   { title:'Health & Human Welfare — Targeted Investments',
     body:'At ~$981K, this bucket leans on a few sizable grants: SA Christian Dental ($220K), AugustHeart ($150K), Dr. Usatine\'s Haven clinic ($125K), Morgan\'s ($100K), and the Greehey Children\'s Cancer Research melatonin study ($100K).' },
 ];
+
+// Decisions & Recommendations for the Board (consolidated on the Overview tab).
+// Bodies may use the tokens {remaining} and {target}, filled with live figures.
+DATA[2026].decisions = [
+  { n:1, title:'Adopt a pledge-reserve policy',
+    body:'Set aside roughly 1–2× the next year\'s pledge obligations in a designated fund so investment swings can\'t force a pledge default. Multi-year pledges (Witte, UTSA, A&amp;M-SA) are in active fulfillment.',
+    tab:'waterfall', linkLabel:'Pledge Waterfall' },
+  { n:2, title:'Adopt a grantee-dependency policy',
+    body:'Confirm a guideline that no single grantee should rely on the Foundation for more than ~20–30% of its operating budget, and stage 12–18 month transitions for high-dependency orgs. Several small grantees are flagged for review.',
+    tab:'dependency', linkLabel:'Org Dependency Risk' },
+  { n:3, title:'Confirm the November-cycle plan to reach the $15M target',
+    body:'About {remaining} remains after the June cycle to meet the {target} distribution target. Confirm the grant slate and timing for the November cycle so the year closes on target.',
+    scroll:true, linkLabel:'Target progress' },
+];

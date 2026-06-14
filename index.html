@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Greehey Family Foundation — Grant Analysis</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -39,6 +41,7 @@
           <button class="year-toggle-btn active" data-year="2025" onclick="setYear(2025)">2025</button>
           <button class="year-toggle-btn" data-year="2026" onclick="setYear(2026)">2026</button>
         </div>
+        <button class="newsletter-btn board-packet-btn" onclick="printBoardPacket()" title="Print or save a board-ready PDF of the summary">🖨️ Board Packet</button>
         <button class="newsletter-btn" onclick="openNewsletters(this)">📰 Newsletters</button>
       </div>
       </div>
@@ -159,7 +162,13 @@
 <div class="main">
 <div id="overview-content">
 
+  <!-- Board landing summary (30-second headline) — rendered by board.js -->
+  <div id="board-summary"></div>
+
   <div id="overview-status"></div>
+
+  <!-- Decisions & recommendations for the board — rendered by board.js -->
+  <div id="board-decisions"></div>
 
   <div class="insight-grid fade-in" id="insight-grid"></div>
 
@@ -701,6 +710,7 @@
 <script src="js/render/dependency.js"></script>
 <script src="js/render/financial.js"></script>
 <script src="js/render/strategy.js"></script>
+<script src="js/render/board.js"></script>
 <!-- Application orchestration -->
 <script src="js/app.js"></script>
 <!-- ══════════════════════════════════════════════════

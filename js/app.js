@@ -105,6 +105,7 @@ function setYear(year) {
 
   renderMeta(year);
   renderOverview(year);
+  if (typeof renderBoard === 'function') renderBoard(year);
   renderRegistry(year);
   renderImpact(year);
   renderFunding(year);
