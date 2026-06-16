@@ -128,7 +128,7 @@ function animateTargetBar() {
   requestAnimationFrame(() => {
     segs.forEach(s => { s.style.width = s.dataset.w + '%'; });
   });
-  counters.forEach(el => _countUp(el, parseFloat(el.dataset.count), el.dataset.fmt, 1100));
+  counters.forEach(el => _countUp(el, parseFloat(el.dataset.count), el.dataset.fmt, 1900));
 }
 
 function _setCount(el, to, kind) {

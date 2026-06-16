@@ -118,7 +118,7 @@
   .family-notice-icon { font-size: 18px; flex-shrink: 0; }
 
   /* Target-bar cycle segments animate their fill on render */
-  .tbar-seg { transition: width 1.1s cubic-bezier(0.16, 1, 0.3, 1); }
+  .tbar-seg { transition: width 1.9s cubic-bezier(0.16, 1, 0.3, 1); }
 
   /* ── Overview: family-facing status banner + detail links ── */
   .ov-status {
