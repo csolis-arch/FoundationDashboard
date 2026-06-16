@@ -57,6 +57,10 @@
   }
   .issue-cover img{ width:54px; height:54px; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5)); }
   .issue-cover .masthead{ font-family:'Playfair Display',serif; font-size:1.5rem; color:#fff; letter-spacing:0.04em; }
+  .issue-tag{ position:absolute; top:12px; right:12px;
+    font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--gold-light); background:rgba(201,168,76,0.14); border:1px solid rgba(201,168,76,0.4);
+    padding:4px 9px; border-radius:999px; }
   .issue-body{ padding:18px 20px; display:flex; flex-direction:column; flex:1; }
   .issue-season{ font-family:'DM Mono',monospace; font-size:11px; color:var(--gold-light);
     letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px; }
@@ -114,11 +118,20 @@
       file: 'generations-summer-2026.html',
       desc: 'Celebrating 90 years of the Greehey legacy and Haven for Hope at fifteen — with stories on youth heart screenings, a place at camp for every child, building brighter futures, and a look at 2026 giving at a glance.'
     },
+    {
+      masthead: 'Foundation News',
+      season: 'Fall 2025',
+      name: 'Fall 2025',
+      file: 'generations-fall-2025.html',
+      tag: 'Inaugural Issue',
+      desc: 'Our very first family newsletter — a letter from our Chair, the Foundation’s mission and values, governance and stewardship, highlights from the November board meeting, 2025 grants totaling $13.28M, and a snapshot of giving since 2004.'
+    },
   ];
 
   document.getElementById('issue-grid').innerHTML = ISSUES.map(it => `
     <a class="issue-card" href="${it.file}" target="_blank" rel="noopener">
       <div class="issue-cover">
+        ${it.tag ? `<span class="issue-tag">${it.tag}</span>` : ''}
         <img src="../assets/logo.png" alt="">
         <div class="masthead">${it.masthead}</div>
       </div>
