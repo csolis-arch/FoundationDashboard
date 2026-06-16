@@ -58,7 +58,7 @@ function renderMeta(year) {
       const novGrad = 'linear-gradient(90deg,#7E9B85,#A7C0AD)';
       const novDot = '#7E9B85';
       document.getElementById('target-bar-inner').innerHTML = `
-        <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;flex-shrink:0">${year} Distribution<br>Target</div>
+        <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;flex-shrink:0">${year} Distribution<br>Target</div>
         <div style="flex:1;min-width:0">
           <div style="position:relative;height:48px;border-radius:8px;overflow:hidden;background:var(--surface2)">
             <div class="tbar-seg" data-w="${junePct}" style="position:absolute;top:0;left:0;height:100%;width:0;background:${juneGrad}"></div>
@@ -68,15 +68,15 @@ function renderMeta(year) {
             </div>
           </div>
           <div style="display:flex;gap:16px;margin-top:7px;flex-wrap:wrap">
-            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim)"><span style="width:9px;height:9px;border-radius:2px;background:${juneDot};flex-shrink:0"></span>June cycle ${fmt(juneAmt)}</div>
-            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim)"><span style="width:9px;height:9px;border-radius:2px;background:${novDot};flex-shrink:0"></span>November cycle ${novAmt > 0 ? fmt(novAmt) : '— upcoming'}</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-muted)"><span style="width:9px;height:9px;border-radius:2px;background:${juneDot};flex-shrink:0"></span>June cycle ${fmt(juneAmt)}</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-muted)"><span style="width:9px;height:9px;border-radius:2px;background:${novDot};flex-shrink:0"></span>November cycle ${novAmt > 0 ? fmt(novAmt) : '— upcoming'}</div>
           </div>
         </div>
         <div class="rmd-divider"></div>
         <div style="display:flex;gap:20px;flex-shrink:0">
-          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--gold-light);line-height:1"><span data-count="${committed}" data-fmt="money">${fmt(0)}</span></div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">Committed</div></div>
-          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--blue);line-height:1">${fmt(target)}</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">${year} Target</div></div>
-          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--orange);line-height:1"><span data-count="${remaining}" data-fmt="money">${fmt(0)}</span></div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">Remaining</div></div>
+          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--gold-light);line-height:1"><span data-count="${committed}" data-fmt="money">${fmt(0)}</span></div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-top:3px">Committed</div></div>
+          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--blue);line-height:1">${fmt(target)}</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-top:3px">${year} Target</div></div>
+          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--orange);line-height:1"><span data-count="${remaining}" data-fmt="money">${fmt(0)}</span></div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-top:3px">Remaining</div></div>
         </div>`;
       targetBar.style.display = '';
       animateTargetBar();
