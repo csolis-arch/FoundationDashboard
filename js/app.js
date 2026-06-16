@@ -52,19 +52,24 @@ function renderMeta(year) {
       const novAmt = committed - juneAmt;
       const junePct = juneAmt / target * 100;
       const novPct = novAmt / target * 100;
+      // Greehey-green fill: deep forest → vivid green for the June cycle, soft sage for November.
+      const juneGrad = 'linear-gradient(90deg,#1E4434,#3E9B63)';
+      const juneDot = '#3E9B63';
+      const novGrad = 'linear-gradient(90deg,#7E9B85,#A7C0AD)';
+      const novDot = '#7E9B85';
       document.getElementById('target-bar-inner').innerHTML = `
         <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;flex-shrink:0">${year} Distribution<br>Target</div>
         <div style="flex:1;min-width:0">
           <div style="position:relative;height:48px;border-radius:8px;overflow:hidden;background:var(--surface2)">
-            <div class="tbar-seg" data-w="${junePct}" style="position:absolute;top:0;left:0;height:100%;width:0;background:linear-gradient(90deg,#c9a84c,#e2c67a)"></div>
-            <div class="tbar-seg" data-w="${novPct}" style="position:absolute;top:0;left:${junePct}%;height:100%;width:0;background:linear-gradient(90deg,#4ec9a4,#5b8dee)"></div>
+            <div class="tbar-seg" data-w="${junePct}" style="position:absolute;top:0;left:0;height:100%;width:0;background:${juneGrad}"></div>
+            <div class="tbar-seg" data-w="${novPct}" style="position:absolute;top:0;left:${junePct}%;height:100%;width:0;background:${novGrad}"></div>
             <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 12px">
               <span style="font-size:12px;color:#fff;font-weight:600;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,0.5)"><span data-count="${committed}" data-fmt="money">${fmt(0)}</span> committed · <span data-count="${pct}" data-fmt="pct">0%</span> of ${fmt(target)} target</span>
             </div>
           </div>
           <div style="display:flex;gap:16px;margin-top:7px;flex-wrap:wrap">
-            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim)"><span style="width:9px;height:9px;border-radius:2px;background:#c9a84c;flex-shrink:0"></span>June cycle ${fmt(juneAmt)}</div>
-            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim)"><span style="width:9px;height:9px;border-radius:2px;background:#4ec9a4;flex-shrink:0"></span>November cycle ${novAmt > 0 ? fmt(novAmt) : '— upcoming'}</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim)"><span style="width:9px;height:9px;border-radius:2px;background:${juneDot};flex-shrink:0"></span>June cycle ${fmt(juneAmt)}</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim)"><span style="width:9px;height:9px;border-radius:2px;background:${novDot};flex-shrink:0"></span>November cycle ${novAmt > 0 ? fmt(novAmt) : '— upcoming'}</div>
           </div>
         </div>
         <div class="rmd-divider"></div>
@@ -111,12 +116,15 @@ function animateTargetBar() {
     return;
   }
 
-  // Reset to empty first so this doubles as a replay (e.g. when the password gate
-  // is dismissed), then force a reflow to commit the 0 baseline before changing the
-  // width — without that flush the browser collapses 0→final and skips the transition.
-  segs.forEach(s => { s.style.width = '0%'; });
+  // Reset to empty so this doubles as a replay (e.g. when the password gate is
+  // dismissed). Critically, the reset must happen with the transition OFF —
+  // otherwise the bar visibly drains backward (final → 0) before refilling.
+  // Sequence: disable transition, snap to 0, flush; restore transition; then grow.
+  segs.forEach(s => { s.style.transition = 'none'; s.style.width = '0%'; });
   counters.forEach(el => _setCount(el, 0, el.dataset.fmt));
-  void root.offsetWidth; // force layout flush
+  void root.offsetWidth;                                  // commit the 0 baseline with no animation
+  segs.forEach(s => { s.style.transition = ''; });        // restore the CSS transition
+  void root.offsetWidth;                                  // commit the transition restore
   requestAnimationFrame(() => {
     segs.forEach(s => { s.style.width = s.dataset.w + '%'; });
   });
