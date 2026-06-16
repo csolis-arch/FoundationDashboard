@@ -106,12 +106,17 @@ function animateTargetBar() {
   const counters = root.querySelectorAll('[data-count]');
 
   if (reduce) {
-    segs.forEach(s => { s.style.width = s.dataset.w + '%'; });
+    segs.forEach(s => { s.style.transition = 'none'; s.style.width = s.dataset.w + '%'; });
     counters.forEach(el => _setCount(el, parseFloat(el.dataset.count), el.dataset.fmt));
     return;
   }
 
-  // Let the 0-width paint commit, then transition to the real widths (CSS handles the ease).
+  // Reset to empty first so this doubles as a replay (e.g. when the password gate
+  // is dismissed), then force a reflow to commit the 0 baseline before changing the
+  // width — without that flush the browser collapses 0→final and skips the transition.
+  segs.forEach(s => { s.style.width = '0%'; });
+  counters.forEach(el => _setCount(el, 0, el.dataset.fmt));
+  void root.offsetWidth; // force layout flush
   requestAnimationFrame(() => {
     segs.forEach(s => { s.style.width = s.dataset.w + '%'; });
   });

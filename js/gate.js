@@ -9,7 +9,12 @@
       if (input.value === CORRECT) {
         gate.style.transition = 'opacity 0.4s ease';
         gate.style.opacity = '0';
-        setTimeout(() => gate.remove(), 400);
+        setTimeout(() => {
+          gate.remove();
+          // Replay the target-bar fill now that the dashboard is actually visible
+          // (at boot it animates behind this gate, so the user never sees it).
+          if (typeof animateTargetBar === 'function') animateTargetBar();
+        }, 400);
       } else {
         err.textContent = 'Incorrect password. Please try again.';
         input.classList.remove('shake');
