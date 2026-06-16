@@ -41,12 +41,17 @@
           <button class="year-toggle-btn active" data-year="2025" onclick="setYear(2025)">2025</button>
           <button class="year-toggle-btn" data-year="2026" onclick="setYear(2026)">2026</button>
         </div>
+        <!-- Board Packet button hidden for now; re-enable when the packet is ready to go live.
         <button class="newsletter-btn board-packet-btn" onclick="printBoardPacket()" title="Print or save a board-ready PDF of the summary">🖨️ Board Packet</button>
+        -->
         <button class="newsletter-btn" onclick="openNewsletters(this)">📰 Newsletters</button>
       </div>
       </div>
     </div>
-    <div class="header-kpis" id="header-kpis"></div>
+    <div class="family-notice" id="family-notice">
+      <span class="family-notice-icon">🔒</span>
+      <span>This dashboard is intended for <strong>Greehey Family members only</strong>.<br class="fn-break">Please do not share.</span>
+    </div>
   </div>
 </div>
 
@@ -270,7 +275,7 @@
   </div>
 
   <div class="card grid-full fade-in">
-    <div class="card-title">Strategic Observations &amp; Analyst Notes</div>
+    <div class="card-title">Executive Director Notes</div>
     <div id="insights-text" style="display:grid;grid-template-columns:1fr 1fr;gap:20px"></div>
   </div>
 

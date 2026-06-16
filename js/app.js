@@ -56,10 +56,10 @@ function renderMeta(year) {
         <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;flex-shrink:0">${year} Distribution<br>Target</div>
         <div style="flex:1;min-width:0">
           <div style="position:relative;height:48px;border-radius:8px;overflow:hidden;background:var(--surface2)">
-            <div style="position:absolute;top:0;left:0;height:100%;width:${junePct}%;background:linear-gradient(90deg,#c9a84c,#e2c67a)"></div>
-            <div style="position:absolute;top:0;left:${junePct}%;height:100%;width:${novPct}%;background:linear-gradient(90deg,#4ec9a4,#5b8dee)"></div>
+            <div class="tbar-seg" data-w="${junePct}" style="position:absolute;top:0;left:0;height:100%;width:0;background:linear-gradient(90deg,#c9a84c,#e2c67a)"></div>
+            <div class="tbar-seg" data-w="${novPct}" style="position:absolute;top:0;left:${junePct}%;height:100%;width:0;background:linear-gradient(90deg,#4ec9a4,#5b8dee)"></div>
             <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 12px">
-              <span style="font-size:12px;color:#fff;font-weight:600;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,0.5)">${fmt(committed)} committed · ${pct}% of ${fmt(target)} target</span>
+              <span style="font-size:12px;color:#fff;font-weight:600;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,0.5)"><span data-count="${committed}" data-fmt="money">${fmt(0)}</span> committed · <span data-count="${pct}" data-fmt="pct">0%</span> of ${fmt(target)} target</span>
             </div>
           </div>
           <div style="display:flex;gap:16px;margin-top:7px;flex-wrap:wrap">
@@ -69,11 +69,12 @@ function renderMeta(year) {
         </div>
         <div class="rmd-divider"></div>
         <div style="display:flex;gap:20px;flex-shrink:0">
-          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--gold-light);line-height:1">${fmt(committed)}</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">Committed</div></div>
+          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--gold-light);line-height:1"><span data-count="${committed}" data-fmt="money">${fmt(0)}</span></div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">Committed</div></div>
           <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--blue);line-height:1">${fmt(target)}</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">${year} Target</div></div>
-          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--orange);line-height:1">${fmt(remaining)}</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">Remaining</div></div>
+          <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--orange);line-height:1"><span data-count="${remaining}" data-fmt="money">${fmt(0)}</span></div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-top:3px">Remaining</div></div>
         </div>`;
       targetBar.style.display = '';
+      animateTargetBar();
     } else {
       targetBar.style.display = 'none';
     }
@@ -92,6 +93,46 @@ function renderMeta(year) {
       footerStats.style.display = 'none';
     }
   }
+}
+
+// Animate the distribution target bar on render: the cycle segments grow from
+// zero (a quick "fill-up" on open) and the dollar / percent figures count up.
+function animateTargetBar() {
+  const root = document.getElementById('target-bar-inner');
+  if (!root) return;
+
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const segs = root.querySelectorAll('.tbar-seg');
+  const counters = root.querySelectorAll('[data-count]');
+
+  if (reduce) {
+    segs.forEach(s => { s.style.width = s.dataset.w + '%'; });
+    counters.forEach(el => _setCount(el, parseFloat(el.dataset.count), el.dataset.fmt));
+    return;
+  }
+
+  // Let the 0-width paint commit, then transition to the real widths (CSS handles the ease).
+  requestAnimationFrame(() => {
+    segs.forEach(s => { s.style.width = s.dataset.w + '%'; });
+  });
+  counters.forEach(el => _countUp(el, parseFloat(el.dataset.count), el.dataset.fmt, 1100));
+}
+
+function _setCount(el, to, kind) {
+  el.textContent = kind === 'pct' ? Math.round(to) + '%' : fmt(to);
+}
+
+function _countUp(el, to, kind, dur) {
+  if (!isFinite(to)) { _setCount(el, to || 0, kind); return; }
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min(1, (now - start) / dur);
+    const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+    _setCount(el, to * eased, kind);
+    if (t < 1) requestAnimationFrame(tick);
+    else _setCount(el, to, kind);
+  }
+  requestAnimationFrame(tick);
 }
 
 // ─────────────────────────────────────────────────────────────

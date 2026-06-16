@@ -31,11 +31,14 @@ function renderBoard(year) {
       ? `<strong>${fmt(committed)}</strong> committed across <strong>${n}</strong> grants to <strong>${orgs}</strong> organizations &mdash; <strong>${pct}%</strong> of the ${fmt(target)} ${year} distribution target.`
       : `<strong>${fmt(committed)}</strong> committed across <strong>${n}</strong> grants to <strong>${orgs}</strong> organizations.`;
 
+    const focusAreas = new Set(grants.map(g => g.cat)).size;
     const tiles = [
       { v: fmt(committed), l: 'Committed · ' + cycle, c: 'var(--gold-light)' },
       target ? { v: pct + '%', l: 'Of $' + (target / 1e6) + 'M Target', c: 'var(--green)' } : null,
       { v: String(orgs), l: 'Organizations Funded', c: 'var(--text)' },
-      target ? { v: fmt(remaining), l: 'Remaining to Target', c: 'var(--orange)' } : { v: String(n), l: 'Grants Made', c: 'var(--text)' },
+      { v: String(n), l: 'Grant Transactions', c: 'var(--text)' },
+      { v: String(focusAreas), l: 'Focus Areas', c: 'var(--text)' },
+      target ? { v: fmt(remaining), l: 'Remaining to Target', c: 'var(--orange)' } : null,
     ].filter(Boolean);
 
     sum.innerHTML = `

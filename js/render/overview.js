@@ -10,10 +10,7 @@ function renderOverview(year) {
   const hasData = setTabData('overview', grants.length > 0,
     'The 2026 grant cycle has not been imported yet. Once the grant list is loaded, the full portfolio analysis will appear here.');
 
-  if (!hasData) {
-    document.getElementById('header-kpis').innerHTML = '';
-    return;
-  }
+  if (!hasData) return;
 
   const totalAmt = grants.reduce((s,g)=>s+g.amt,0);
   _donutTotal = totalAmt;
@@ -59,29 +56,6 @@ function renderOverview(year) {
 
   const novTotal=grants.filter(g=>g.d.startsWith('11')).reduce((s,g)=>s+g.amt,0);
   const novPct=Math.round(novTotal/totalAmt*100);
-
-  // Prior-year reference figures (shown as a neutral "vs YYYY" line, not a
-  // signed delta — the current year may be mid-cycle, which would mislead).
-  const prev = DATA[year - 1];
-  const pg = (prev && prev.grants) || [];
-  // Only show the prior-year comparison when that year is enabled in the UI
-  // (2025 is hidden pending re-verification — see YEARS_ENABLED in app.js).
-  const prevEnabled = (typeof YEARS_ENABLED === 'undefined') || YEARS_ENABLED.includes(year - 1);
-  const hasPrev = pg.length > 0 && prevEnabled;
-  const pTot = pg.reduce((s, g) => s + g.amt, 0);
-  const pOrg = new Set(pg.map(g => g.org)).size;
-  const pCats = new Set(pg.map(g => g.cat)).size;
-  const ref = v => hasPrev ? `<div class="kpi-ref">vs ${year - 1}: ${v}</div>` : '';
-
-  document.getElementById('header-kpis').innerHTML=`
-    <div class="kpi"><div class="kpi-val">${fmt(totalAmt)}</div><div class="kpi-label">Total Disbursed</div>${ref(fmt(pTot))}</div>
-    <div class="kpi-divider"></div>
-    <div class="kpi"><div class="kpi-val">${totalGrants}</div><div class="kpi-label">Grant Transactions</div>${ref(pg.length)}</div>
-    <div class="kpi-divider"></div>
-    <div class="kpi"><div class="kpi-val">${uniqueOrgs}</div><div class="kpi-label">Unique Recipients</div>${ref(pOrg)}</div>
-    <div class="kpi-divider"></div>
-    <div class="kpi"><div class="kpi-val">${cats.length}</div><div class="kpi-label">Focus Areas</div>${ref(pCats)}</div>
-  `;
 
   // 5% distribution (RMD) compliance status — the family-facing headline.
   const comp = d.meta && d.meta.compliance;
